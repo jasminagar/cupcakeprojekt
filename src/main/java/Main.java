@@ -1,11 +1,15 @@
 import config.SessionConfig;
 import config.ThymeleafConfig;
+import controllers.UserController;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
+import persistence.Database;
+import service.UserService;
 
 public class Main {
 
     public static void main(String[] args) {
+        Database db = new Database("postgres", "postgres", "jdbc:postgresql://localhost:5432/cupcake");
 
         // Initializing Javalin and Jetty webserver
         Javalin app = Javalin.create(config -> {
@@ -17,6 +21,12 @@ public class Main {
         }).start(7070);
 
         // Routing
-        app.get("/", ctx -> ctx.render("index.html"));
+        app.get("/", ctx -> ctx.render("index"));
+
+        // Opret services
+        UserService userService = new UserService(db);
+
+        // Opret controllers (registrerer endpoints)
+        new UserController(app, userService);
     }
 }

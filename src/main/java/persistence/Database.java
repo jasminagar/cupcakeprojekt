@@ -5,12 +5,33 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
+    private Connection connection;
+    private final String USER;
+    private final String PASSWORD;
+    private final String URL;
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/cupcake";
-    private static final String USER = "postgres";
-    private static final String PASSWORD = "postgres";
+    public Database(String user, String password, String url) {
+        USER = user;
+        PASSWORD = password;
+        URL = url;
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            // TODO: Make own throwable exception and let it bubble upwards
+            e.printStackTrace();
+            System.out.println("Fejl ved instantiering af Driver klasse");
+        }
+    }
 
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+    public Connection getConnection(){
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (SQLException throwables) {
+            // TODO: Make own throwable exception and let it bubble upwards
+            throwables.printStackTrace();
+            System.out.println("Fejl under etablering af forbindelse til database");
+        }
+        return connection;
     }
 }
