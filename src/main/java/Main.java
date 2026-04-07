@@ -1,10 +1,15 @@
 import config.SessionConfig;
 import config.ThymeleafConfig;
+import controllers.OrderController;
 import controllers.UserController;
+import entities.Order;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import persistence.Database;
-import service.UserService;
+import services.BottomService;
+import services.OrderService;
+import services.ToppingService;
+import services.UserService;
 
 public class Main {
 
@@ -23,10 +28,13 @@ public class Main {
         // Routing
         app.get("/", ctx -> ctx.render("index"));
 
-        // Opret services
-        UserService userService = new UserService(db);
 
-        // Opret controllers (registrerer endpoints)
-        new UserController(app, userService);
+        UserService userService = new UserService(db);
+        BottomService bottomService = new BottomService(db);
+        ToppingService toppingService = new ToppingService(db);
+        OrderService orderService = new OrderService(db, bottomService, toppingService);
+
+        new UserController(app, userService, bottomService, toppingService);
+        new OrderController(app, orderService);
     }
 }
