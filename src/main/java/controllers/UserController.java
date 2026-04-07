@@ -1,15 +1,21 @@
 package controllers;
 
+import entities.CupcakeBottom;
+import entities.CupcakeTop;
+import entities.OrderRequest;
+import entities.User;
 import io.javalin.Javalin;
-import service.UserService;
+import services.BottomService;
+import services.ToppingService;
+import services.UserService;
+
+import java.util.List;
 
 public class UserController {
 
-    public UserController(Javalin app, UserService userService) {
+    public UserController(Javalin app, UserService userService, BottomService bottomService, ToppingService toppingService) {
 
         app.get("/registerUser", ctx -> ctx.render("registerUser"));
-
-        // POST /register - opret ny bruger
         app.post("/registerUser", ctx -> {
             String username = ctx.formParam("username");
             String password = ctx.formParam("password");
@@ -34,11 +40,10 @@ public class UserController {
                 ctx.status(409).result("Username already exists");
             }
         });
-
-        // GET /users - hent alle brugere (kun hvis du vil liste dem)
+        //Til at liste alle brugere
         app.get("/users", ctx -> {
             ctx.attribute("users", userService.getAllUsers());
-            ctx.render("users.html"); // fil i templates
+            ctx.render("users.html");
         });
 
         app.get("/users/{username}", ctx -> {
@@ -52,10 +57,19 @@ public class UserController {
                 ctx.status(404).result("User not found");
             }
         });
-        app.get("/menu", context -> {
-            context.render("menu");
+        app.get("/order", ctx -> {
+            List<CupcakeBottom> bottoms = bottomService.getAllBottoms();
+            List<CupcakeTop> toppings = toppingService.getAllTops();
+
+            ctx.attribute("bottoms", bottoms);  // send til Thymeleaf
+            ctx.attribute("toppings", toppings); // send til Thymeleaf
+            ctx.attribute("orderRequest", new OrderRequest()); // til th:object
+
+            User currentUser = ctx.sessionAttribute("currentUser");
+            ctx.attribute("currentUser", currentUser); // hidden field
+
+            ctx.render("order");
         });
-        // POST /login - log ind
         app.post("/login", ctx -> {
             String username = ctx.formParam("username");
             String password = ctx.formParam("password");
@@ -68,8 +82,9 @@ public class UserController {
             boolean authenticated = userService.loginIn(username.trim(), password.trim());
 
             if (authenticated) {
-                ctx.sessionAttribute("currentUser", username.trim());
-                ctx.redirect("/menu");
+                User user = userService.getUserByUsername(username.trim());
+                ctx.sessionAttribute("currentUser", user);
+                ctx.redirect("/order");
             } else {
                 ctx.status(401).result("Invalid username or password");
             }

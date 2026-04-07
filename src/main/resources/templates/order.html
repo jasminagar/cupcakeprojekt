@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bestil Cupcakes</title>
+</head>
+<body>
+<h1>Bestil dine cupcakes</h1>
+
+<p>Antal bottoms: <span th:text="${#lists.size(bottoms)}">0</span></p>
+<p>Antal toppings: <span th:text="${#lists.size(toppings)}">0</span></p>
+
+
+<form action="/orders" method="post" th:object="${orderRequest}">
+    <!-- Bund dropdown -->
+    <label for="bottom">Vælg bund:</label>
+    <select name="bottomId" id="bottom" required>
+        <option th:each="bottom : ${bottoms}"
+                th:value="${bottom.id}"
+                th:text="${bottom.flavour + ' - ' + bottom.price + ' kr'}">
+        </option>
+    </select>
+
+    <!-- Top dropdown -->
+    <label for="topping">Vælg top:</label>
+    <select name="toppingId" id="topping" required>
+        <option th:each="top : ${toppings}"
+                th:value="${top.id}"
+                th:text="${top.flavour + ' - ' + top.price + ' kr'}">
+        </option>
+    </select>
+
+    <!-- Antal -->
+    <label for="quantity">Antal:</label>
+    <input type="number" name="quantity" id="quantity" min="1" value="1" required>
+
+    <!-- Afhentningstid -->
+    <label for="pickupTime">Afhentningstid:</label>
+    <input type="datetime-local" name="pickupTime" id="pickupTime" required>
+
+    <!-- Hidden userId -->
+    <input type="hidden" name="userId" th:value="${currentUser.id}" />
+
+    <button type="submit">Bestil</button>
+</form>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package service;
+package services;
 
 import entities.User;
 import persistence.Database;
@@ -54,17 +54,24 @@ public class UserService {
         } return allUsers;
     }
 
-    public List<User> getUserByUsername(String username){
-        List<User> user = new ArrayList<>();
-        try(Connection connection = database.getConnection()){
-            String sql = "select * from users where name = ?";
-
+    public User getUserByUsername(String username) {
+        User user = null;
+        try (Connection connection = database.getConnection()) {
+            String sql = "SELECT * FROM users WHERE name = ?";
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, username);
-            ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setPassword(rs.getString("password"));
+            }
         } catch (Exception e) {
             e.printStackTrace();
-        } return user;
+        }
+        return user;
     }
 
     public boolean loginIn(String name, String password) {
