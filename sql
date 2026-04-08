@@ -47,6 +47,12 @@ create table order_lines(
     line_price int not null
 );
 
+ALTER TABLE users ALTER COLUMN balance TYPE numeric(10,2);
+ALTER TABLE bottoms ALTER COLUMN price TYPE numeric(10,2);
+ALTER TABLE toppings ALTER COLUMN price TYPE numeric(10,2);
+ALTER TABLE orders ALTER COLUMN total_price TYPE numeric(10,2);
+ALTER TABLE order_lines ALTER COLUMN line_price TYPE numeric(10,2);
+
 INSERT INTO bottoms (flavour, price) VALUES
 ('Chocolate', 5),
 ('Vanilla', 5),

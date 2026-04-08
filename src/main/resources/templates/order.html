@@ -4,7 +4,10 @@
     <title>Bestil Cupcakes</title>
 </head>
 <body>
+
+<!-- Fælles header -->
 <div th:replace="fragments/header :: header"></div>
+
 <h1>Bestil dine cupcakes</h1>
 
 <p>Antal bottoms: <span th:text="${#lists.size(bottoms)}">0</span></p>
@@ -44,5 +47,6 @@
 
     <button type="submit">Bestil</button>
 </form>
+
 </body>
 </html>

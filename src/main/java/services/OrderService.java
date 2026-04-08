@@ -3,10 +3,9 @@ package services;
 import entities.*;
 import persistence.Database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderService {
 
@@ -21,6 +20,65 @@ public class OrderService {
         this.userService = userService;
         this.bottomService = bottomService;
         this.toppingService = toppingService;
+    }
+
+    public List<OrderLine> getAllOrderLines() {
+        List<OrderLine> lines = new ArrayList<>();
+        String sql = """
+        SELECT ol.order_id, b.name AS bottomName, t.name AS topName,
+               ol.quantity, ol.line_price
+        FROM order_lines ol
+        JOIN cupcake_bottoms b ON ol.bottom_id = b.id
+        JOIN cupcake_tops t ON ol.topping_id = t.id
+    """;
+
+        try (Connection con = database.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while(rs.next()) {
+                OrderLine line = new OrderLine();
+                line.setOrderId(rs.getInt("order_id"));
+                line.setBottomFlavour(rs.getString("bottomName"));
+                line.setTopFlavour(rs.getString("topName"));
+                line.setQuantity(rs.getInt("quantity"));
+                line.setLinePrice(rs.getDouble("line_price"));
+                lines.add(line);
+            }
+
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lines;
+    }
+
+    public List<Order> getAllOrders() {
+        List<Order> orders = new ArrayList<>();
+        String sql = "SELECT o.id, o.user_id, u.email, o.pickup_time, o.total_price " +
+                "FROM orders o " +
+                "JOIN users u ON o.user_id = u.id " +
+                "ORDER BY o.pickup_time DESC";
+
+        try (Connection con = database.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("id"));
+                order.setUserId(rs.getInt("user_id"));
+                order.setEmail(rs.getString("email"));
+                order.setPickupTime(rs.getTimestamp("pickup_time").toLocalDateTime());
+                order.setTotalPrice(rs.getDouble("total_price"));
+                orders.add(order);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orders;
     }
 
     public OrderResponse createOrder(OrderRequest request) {
