@@ -54,3 +54,22 @@ INSERT INTO toppings (flavour, price) VALUES
 ('Lemon', 8),
 ('Blue cheese', 9);
 
+***************************
+delete from order_lines
+where order_id in (
+    select id from orders
+    where user_id in (
+        select id from users
+        where balance is null
+    )
+);
+
+delete from orders
+where user_id in (
+    select id from users
+    where balance is null
+);
+
+delete from users
+where balance is null;
+

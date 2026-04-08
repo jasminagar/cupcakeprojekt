@@ -34,6 +34,35 @@ public class UserService {
         return true;
     }
 
+    public User getUserById(int id) {
+        String sql = "SELECT id, name, password, balance FROM users WHERE id = ?";
+
+        try (Connection con = database.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User(
+                            rs.getString("name"),
+                            rs.getString("password"),
+                            rs.getDouble("balance")
+                    );
+
+                    user.setId(rs.getInt("id"));
+
+                    return user;
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public List<User> getAllUsers() {
         List<User> allUsers = new ArrayList<>();
 

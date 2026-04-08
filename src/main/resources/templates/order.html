@@ -9,6 +9,7 @@
 <p>Antal bottoms: <span th:text="${#lists.size(bottoms)}">0</span></p>
 <p>Antal toppings: <span th:text="${#lists.size(toppings)}">0</span></p>
 
+<p>Din saldo: <span th:text="${currentUser.balance}"></span> kr.</p>
 
 <form action="/orders" method="post" th:object="${orderRequest}">
     <!-- Bund dropdown -->

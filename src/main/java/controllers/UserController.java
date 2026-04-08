@@ -13,7 +13,7 @@ import java.util.List;
 
 public class UserController {
 
-    public UserController(Javalin app, UserService userService, BottomService bottomService, ToppingService toppingService) {
+    public UserController(Javalin app, UserService userService) {
 
         app.get("/registerUser", ctx -> ctx.render("registerUser"));
         app.post("/registerUser", ctx -> {
@@ -57,19 +57,6 @@ public class UserController {
             } else {
                 ctx.status(404).result("User not found");
             }
-        });
-        app.get("/order", ctx -> {
-            List<CupcakeBottom> bottoms = bottomService.getAllBottoms();
-            List<CupcakeTop> toppings = toppingService.getAllTops();
-
-            ctx.attribute("bottoms", bottoms);  // send til Thymeleaf
-            ctx.attribute("toppings", toppings); // send til Thymeleaf
-            ctx.attribute("orderRequest", new OrderRequest()); // til th:object
-
-            User currentUser = ctx.sessionAttribute("currentUser");
-            ctx.attribute("currentUser", currentUser); // hidden field
-
-            ctx.render("order");
         });
 
         app.get("/login", context -> {
