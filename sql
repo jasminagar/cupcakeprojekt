@@ -7,6 +7,8 @@ CREATE TABLE users (
 alter table users
 add balance int;
 
+ALTER TABLE users ADD COLUMN role VARCHAR(20) DEFAULT 'user';
+
 create table bottoms(
 id serial primary key,
 flavour varchar(50),

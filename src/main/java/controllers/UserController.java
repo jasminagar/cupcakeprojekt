@@ -71,12 +71,17 @@ public class UserController {
                 return;
             }
 
-            boolean authenticated = userService.loginIn(username.trim(), password.trim());
+            User user = userService.login(username.trim(), password.trim());
 
-            if (authenticated) {
-                User user = userService.getUserByUsername(username.trim());
+            if (user != null) {
                 ctx.sessionAttribute("currentUser", user);
-                ctx.redirect("/order");
+
+                if ("admin".equals(user.getRole())) {
+                    ctx.redirect("/admin");
+                } else {
+                    ctx.redirect("/order");
+                }
+
             } else {
                 ctx.status(401).result("Invalid username or password");
             }

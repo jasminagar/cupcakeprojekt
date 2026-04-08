@@ -5,11 +5,13 @@ private int id;
 private String name;
 private String password;
 private double balance;
+private String role;
 
-    public User(String name, String password, double balance) {
+    public User(String name, String password, double balance, String role) {
         this.name = name;
         this.password = password;
         this.balance = balance;
+        this.role = role;
     }
 
     public User() {}
@@ -44,5 +46,13 @@ private double balance;
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

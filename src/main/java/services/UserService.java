@@ -17,6 +17,24 @@ public class UserService {
         this.database = database;
     }
 
+    public boolean addBalance(int userId, double amount){
+        String sql = "UPDATE users SET balance = balance + ? WHERE id = ?";
+
+        try (Connection con = database.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setDouble(1, amount);
+            ps.setInt(2, userId);
+
+            int updated = ps.executeUpdate();
+            return updated == 1;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean createUser(String name, String password, double balance) {
         try (Connection connection = database.getConnection()) {
             String sql = "insert into users (name, password, balance) values (?,?, ?)";
@@ -35,7 +53,7 @@ public class UserService {
     }
 
     public User getUserById(int id) {
-        String sql = "SELECT id, name, password, balance FROM users WHERE id = ?";
+        String sql = "SELECT id, name, password, balance, role FROM users WHERE id = ?";
 
         try (Connection con = database.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -47,7 +65,8 @@ public class UserService {
                     User user = new User(
                             rs.getString("name"),
                             rs.getString("password"),
-                            rs.getDouble("balance")
+                            rs.getDouble("balance"),
+                            rs.getString("role")
                     );
 
                     user.setId(rs.getInt("id"));
@@ -77,12 +96,43 @@ public class UserService {
                 allUsers.add(new User(
                         rs.getString("name"),
                         rs.getString("password"),
-                        rs.getDouble("balance")));
+                        rs.getDouble("balance"),
+                        rs.getString("role")));
 
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } return allUsers;
+        }
+        return allUsers;
+    }
+
+    public User login(String username, String password) {
+        String sql = "SELECT id, name, password, balance, role FROM users WHERE name = ? AND password = ?";
+
+        try (Connection con = database.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, username);
+            ps.setString(2, password);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User(
+                            rs.getString("name"),
+                            rs.getString("password"),
+                            rs.getDouble("balance"),
+                            rs.getString("role")
+                    );
+                    user.setId(rs.getInt("id"));
+                    return user;
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null; // login fejlede
     }
 
     public User getUserByUsername(String username) {

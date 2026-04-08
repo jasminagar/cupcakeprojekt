@@ -1,5 +1,6 @@
 import config.SessionConfig;
 import config.ThymeleafConfig;
+import controllers.AdminController;
 import controllers.OrderController;
 import controllers.UserController;
 import entities.Order;
@@ -33,6 +34,7 @@ public class Main {
         BottomService bottomService = new BottomService(db);
         ToppingService toppingService = new ToppingService(db);
         OrderService orderService = new OrderService(db, userService, bottomService, toppingService);
+        AdminController adminController = new AdminController(app,userService,orderService);
 
         new UserController(app, userService);
         new OrderController(app, orderService, userService, bottomService, toppingService);
