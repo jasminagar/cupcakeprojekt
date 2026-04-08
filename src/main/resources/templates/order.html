@@ -4,6 +4,7 @@
     <title>Bestil Cupcakes</title>
 </head>
 <body>
+<div th:replace="fragments/header :: header"></div>
 <h1>Bestil dine cupcakes</h1>
 
 <p>Antal bottoms: <span th:text="${#lists.size(bottoms)}">0</span></p>

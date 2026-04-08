@@ -15,6 +15,13 @@ public class UserController {
 
     public UserController(Javalin app, UserService userService) {
 
+        app.before(ctx -> {
+            User currentUser = ctx.sessionAttribute("currentUser");
+            if (currentUser != null) {
+                ctx.attribute("currentUser", currentUser);
+            }
+        });
+
         app.get("/registerUser", ctx -> ctx.render("registerUser"));
         app.post("/registerUser", ctx -> {
             String username = ctx.formParam("username");
@@ -32,7 +39,7 @@ public class UserController {
                 return;
             }
 
-            boolean created = userService.createUser(trimUsername, password.trim(), balance);
+            boolean created = userService.createUser(trimUsername, username.trim(), password.trim(), balance);
 
             if (created) {
                 ctx.status(201).result("User created successfully");
@@ -63,6 +70,7 @@ public class UserController {
             context.render("login");
         });
         app.post("/login", ctx -> {
+            String email = ctx.formParam("email");
             String username = ctx.formParam("username");
             String password = ctx.formParam("password");
 
@@ -71,7 +79,7 @@ public class UserController {
                 return;
             }
 
-            User user = userService.login(username.trim(), password.trim());
+            User user = userService.login(email.trim(), username.trim(), password.trim());
 
             if (user != null) {
                 ctx.sessionAttribute("currentUser", user);
@@ -83,7 +91,7 @@ public class UserController {
                 }
 
             } else {
-                ctx.status(401).result("Invalid username or password");
+                ctx.status(401).result("Forkert mail eller kdeord");
             }
         });
 

@@ -2,13 +2,15 @@ package entities;
 
 public class User {
 private int id;
+private String email;
 private String name;
 private String password;
 private double balance;
 private String role;
 
-    public User(String name, String password, double balance, String role) {
+    public User(String name, String email, String password, double balance, String role) {
         this.name = name;
+        this.email = email;
         this.password = password;
         this.balance = balance;
         this.role = role;
@@ -22,6 +24,14 @@ private String role;
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getName() {

@@ -17,7 +17,7 @@ public class UserService {
         this.database = database;
     }
 
-    public boolean addBalance(int userId, double amount){
+    public boolean addBalance(int userId, double amount) {
         String sql = "UPDATE users SET balance = balance + ? WHERE id = ?";
 
         try (Connection con = database.getConnection();
@@ -35,14 +35,15 @@ public class UserService {
         }
     }
 
-    public boolean createUser(String name, String password, double balance) {
+    public boolean createUser(String email, String name, String password, double balance) {
         try (Connection connection = database.getConnection()) {
-            String sql = "insert into users (name, password, balance) values (?,?, ?)";
+            String sql = "insert into users (email, name, password, balance) values (?, ?,?, ?)";
 
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, name);
-            ps.setString(2, password);
-            ps.setDouble(3, balance);
+            ps.setString(1, email);
+            ps.setString(2, name);
+            ps.setString(3, password);
+            ps.setDouble(4, balance);
 
             ps.executeUpdate();
 
@@ -53,7 +54,7 @@ public class UserService {
     }
 
     public User getUserById(int id) {
-        String sql = "SELECT id, name, password, balance, role FROM users WHERE id = ?";
+        String sql = "SELECT id, email, name, password, balance, role FROM users WHERE id = ?";
 
         try (Connection con = database.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -63,6 +64,7 @@ public class UserService {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     User user = new User(
+                            rs.getString("email"),
                             rs.getString("name"),
                             rs.getString("password"),
                             rs.getDouble("balance"),
@@ -94,6 +96,7 @@ public class UserService {
 
             while (rs.next()) {
                 allUsers.add(new User(
+                        rs.getString("email"),
                         rs.getString("name"),
                         rs.getString("password"),
                         rs.getDouble("balance"),
@@ -106,18 +109,20 @@ public class UserService {
         return allUsers;
     }
 
-    public User login(String username, String password) {
-        String sql = "SELECT id, name, password, balance, role FROM users WHERE name = ? AND password = ?";
+    public User login(String email, String username, String password) {
+        String sql = "SELECT id, email, name, password, balance, role FROM users WHERE email = ? and name = ? AND password = ?";
 
         try (Connection con = database.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setString(1, username);
-            ps.setString(2, password);
+            ps.setString(1, email);
+            ps.setString(2, username);
+            ps.setString(3, password);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     User user = new User(
+                            rs.getString("email"),
                             rs.getString("name"),
                             rs.getString("password"),
                             rs.getDouble("balance"),

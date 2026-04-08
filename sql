@@ -9,6 +9,16 @@ add balance int;
 
 ALTER TABLE users ADD COLUMN role VARCHAR(20) DEFAULT 'user';
 
+ALTER TABLE users ADD COLUMN email VARCHAR(255) UNIQUE;
+UPDATE users
+SET email = name || '@example.com'
+WHERE email IS NULL;
+
+ALTER TABLE users ADD COLUMN email VARCHAR(255) UNIQUE NOT NULL;
+
+ALTER TABLE users ALTER COLUMN email SET NOT NULL;
+ALTER TABLE users ADD CONSTRAINT unique_email UNIQUE(email);
+
 create table bottoms(
 id serial primary key,
 flavour varchar(50),
