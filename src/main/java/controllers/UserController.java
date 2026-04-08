@@ -19,6 +19,7 @@ public class UserController {
         app.post("/registerUser", ctx -> {
             String username = ctx.formParam("username");
             String password = ctx.formParam("password");
+            double balance = Double.parseDouble(ctx.formParam("balance"));
 
             if (username == null || password == null) {
                 ctx.status(400).result("Username and password required");
@@ -31,7 +32,7 @@ public class UserController {
                 return;
             }
 
-            boolean created = userService.createUser(trimUsername, password.trim());
+            boolean created = userService.createUser(trimUsername, password.trim(), balance);
 
             if (created) {
                 ctx.status(201).result("User created successfully");

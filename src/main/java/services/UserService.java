@@ -17,13 +17,14 @@ public class UserService {
         this.database = database;
     }
 
-    public boolean createUser(String name, String password) {
+    public boolean createUser(String name, String password, double balance) {
         try (Connection connection = database.getConnection()) {
-            String sql = "insert into users (name, password) values (?,?)";
+            String sql = "insert into users (name, password, balance) values (?,?, ?)";
 
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, name);
             ps.setString(2, password);
+            ps.setDouble(3, balance);
 
             ps.executeUpdate();
 
@@ -46,7 +47,8 @@ public class UserService {
             while (rs.next()) {
                 allUsers.add(new User(
                         rs.getString("name"),
-                        rs.getString("password")));
+                        rs.getString("password"),
+                        rs.getDouble("balance")));
 
             }
         } catch (Exception e) {

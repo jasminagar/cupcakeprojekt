@@ -4,6 +4,9 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL
 );
 
+alter table users
+add balance int;
+
 create table bottoms(
 id serial primary key,
 flavour varchar(50),
