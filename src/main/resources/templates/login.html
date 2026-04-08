@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Register</title>
+    <title>Login</title>
     <meta charset="UTF-8">
 </head>
 <body>
-<h1>Register</h1>
 
-<form method="post" action="/registerUser">
+<h1>Login</h1>
+
+<form method="post" action="/login">
     <label>Username</label>
     <input name="username" required>
-
     <label>Password</label>
     <input name="password" type="password" required>
-
-    <button type="submit">Register</button>
+    <button type="submit">Login</button>
 </form>
-
-<a href="/login">Back to login</a>
 </body>
 </html>
