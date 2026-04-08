@@ -32,9 +32,9 @@ public class Main {
         UserService userService = new UserService(db);
         BottomService bottomService = new BottomService(db);
         ToppingService toppingService = new ToppingService(db);
-        OrderService orderService = new OrderService(db, bottomService, toppingService);
+        OrderService orderService = new OrderService(db, userService, bottomService, toppingService);
 
-        new UserController(app, userService, bottomService, toppingService);
-        new OrderController(app, orderService);
+        new UserController(app, userService);
+        new OrderController(app, orderService, userService, bottomService, toppingService);
     }
 }

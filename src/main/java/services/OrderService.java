@@ -1,9 +1,6 @@
 package services;
 
-import entities.CupcakeBottom;
-import entities.CupcakeTop;
-import entities.OrderRequest;
-import entities.OrderResponse;
+import entities.*;
 import persistence.Database;
 
 import java.sql.Connection;
@@ -16,9 +13,12 @@ public class OrderService {
     private Database database;
     private BottomService bottomService;
     private ToppingService toppingService;
+    private Database db;
+    UserService userService = new UserService(db);
 
-    public OrderService(Database database, BottomService bottomService, ToppingService toppingService) {
+    public OrderService(Database database,UserService userService, BottomService bottomService, ToppingService toppingService) {
         this.database = database;
+        this.userService = userService;
         this.bottomService = bottomService;
         this.toppingService = toppingService;
     }
@@ -27,14 +27,20 @@ public class OrderService {
 
         CupcakeBottom bottom = bottomService.getBottomById(request.getBottomId());
         CupcakeTop topping = toppingService.getTopById(request.getToppingId());
+        User user = userService.getUserById(request.getUserId());
 
         if (bottom == null || topping == null) {
             throw new IllegalArgumentException("Bottom or topping not found");
         }
 
         double totalPrice = (bottom.getPrice() + topping.getPrice()) * request.getQuantity();
+        if(user.getBalance() < totalPrice){
+            throw new IllegalArgumentException("Not enough funds");
+        }
 
         try (Connection con = database.getConnection()) {
+
+            con.setAutoCommit(false);
 
             String orderSql = """
                     insert into orders(user_id, pickup_time, total_price)
@@ -64,6 +70,14 @@ public class OrderService {
             linePs.setInt(4, request.getQuantity());
             linePs.setDouble(5, totalPrice);
             linePs.executeUpdate();
+
+            String updateBalanceSql = "update users set balance = balance - ? where id = ?";
+            PreparedStatement balancePs = con.prepareStatement(updateBalanceSql);
+            balancePs.setDouble(1, totalPrice);
+            balancePs.setInt(2, request.getUserId());
+            balancePs.executeUpdate();
+
+            con.commit();
 
             return new OrderResponse(orderId, totalPrice, request.getPickupTime());
 

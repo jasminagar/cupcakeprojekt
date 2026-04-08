@@ -13,12 +13,13 @@ import java.util.List;
 
 public class UserController {
 
-    public UserController(Javalin app, UserService userService, BottomService bottomService, ToppingService toppingService) {
+    public UserController(Javalin app, UserService userService) {
 
         app.get("/registerUser", ctx -> ctx.render("registerUser"));
         app.post("/registerUser", ctx -> {
             String username = ctx.formParam("username");
             String password = ctx.formParam("password");
+            double balance = Double.parseDouble(ctx.formParam("balance"));
 
             if (username == null || password == null) {
                 ctx.status(400).result("Username and password required");
@@ -31,7 +32,7 @@ public class UserController {
                 return;
             }
 
-            boolean created = userService.createUser(trimUsername, password.trim());
+            boolean created = userService.createUser(trimUsername, password.trim(), balance);
 
             if (created) {
                 ctx.status(201).result("User created successfully");
@@ -56,19 +57,6 @@ public class UserController {
             } else {
                 ctx.status(404).result("User not found");
             }
-        });
-        app.get("/order", ctx -> {
-            List<CupcakeBottom> bottoms = bottomService.getAllBottoms();
-            List<CupcakeTop> toppings = toppingService.getAllTops();
-
-            ctx.attribute("bottoms", bottoms);  // send til Thymeleaf
-            ctx.attribute("toppings", toppings); // send til Thymeleaf
-            ctx.attribute("orderRequest", new OrderRequest()); // til th:object
-
-            User currentUser = ctx.sessionAttribute("currentUser");
-            ctx.attribute("currentUser", currentUser); // hidden field
-
-            ctx.render("order");
         });
 
         app.get("/login", context -> {

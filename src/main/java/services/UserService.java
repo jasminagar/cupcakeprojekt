@@ -17,13 +17,14 @@ public class UserService {
         this.database = database;
     }
 
-    public boolean createUser(String name, String password) {
+    public boolean createUser(String name, String password, double balance) {
         try (Connection connection = database.getConnection()) {
-            String sql = "insert into users (name, password) values (?,?)";
+            String sql = "insert into users (name, password, balance) values (?,?, ?)";
 
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, name);
             ps.setString(2, password);
+            ps.setDouble(3, balance);
 
             ps.executeUpdate();
 
@@ -31,6 +32,35 @@ public class UserService {
             e.printStackTrace();
         }
         return true;
+    }
+
+    public User getUserById(int id) {
+        String sql = "SELECT id, name, password, balance FROM users WHERE id = ?";
+
+        try (Connection con = database.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User(
+                            rs.getString("name"),
+                            rs.getString("password"),
+                            rs.getDouble("balance")
+                    );
+
+                    user.setId(rs.getInt("id"));
+
+                    return user;
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public List<User> getAllUsers() {
@@ -46,7 +76,8 @@ public class UserService {
             while (rs.next()) {
                 allUsers.add(new User(
                         rs.getString("name"),
-                        rs.getString("password")));
+                        rs.getString("password"),
+                        rs.getDouble("balance")));
 
             }
         } catch (Exception e) {
