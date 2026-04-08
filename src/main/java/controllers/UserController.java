@@ -35,7 +35,7 @@ public class UserController {
 
             if (created) {
                 ctx.status(201).result("User created successfully");
-                ctx.redirect("/"); // tilbage til login siden
+                ctx.redirect("/login");
             } else {
                 ctx.status(409).result("Username already exists");
             }
@@ -69,6 +69,10 @@ public class UserController {
             ctx.attribute("currentUser", currentUser); // hidden field
 
             ctx.render("order");
+        });
+
+        app.get("/login", context -> {
+            context.render("login");
         });
         app.post("/login", ctx -> {
             String username = ctx.formParam("username");
