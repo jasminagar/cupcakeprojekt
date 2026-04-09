@@ -1,17 +1,74 @@
-<header th:fragment="header" class="site-header">
-    <nav class="site-nav page-shell">
-        <div class="site-nav-left">
-            <a th:href="@{/}" href="/">Hjem</a>
-            <a th:href="@{/order}" href="/order">Bestil</a>
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Olsker Cupcakes</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+<div th:fragment="header">
+
+    <!-- Top navigation / user info -->
+    <div class="site-nav-right">
+        <span th:if="${currentUser != null}">
+            Logget ind som: <span th:text="${currentUser.email}">email@example.com</span>
+        </span>
+        <a th:if="${currentUser != null}" th:href="@{/logout}">Log ud</a>
+        <a th:if="${currentUser == null}" th:href="@{/login}">Log ind</a>
+
+        <!-- Cart dropdown -->
+        <div class="cart-dropdown-wrapper">
+            <button id="cartButton" type="button" aria-label="Åbn kurv">
+                🛒
+                <span class="cart-count" th:text="${cart != null ? #lists.size(cart) : 0}">0</span>
+            </button>
+
+            <div class="cart-dropdown" id="cartDropdown">
+                <div th:if="${cart == null || #lists.isEmpty(cart)}">Din kurv er tom</div>
+
+                <div th:each="item, iterStat : ${cart}" class="cart-item">
+                    <strong th:text="${item.bottomName} + ' + ' + item.toppingName">Cupcake + Topping</strong>
+                    <span>Antal: <span th:text="${item.quantity}">1</span></span>
+                    <span>Pris: <span th:text="${#numbers.formatDecimal(item.totalPrice,1,2)}">0.00</span> kr</span>
+                    <form th:action="@{'/cart/remove/' + ${iterStat.index}}" method="post">
+                        <button type="submit">Slet</button>
+                    </form>
+                </div>
+
+                <div class="cart-total">
+                    Total: <span th:text="${#numbers.formatDecimal(totalCartPrice != null ? totalCartPrice : 0,1,2)}">0.00</span> kr
+                </div>
+
+                <form th:action="@{/checkout}" method="post">
+                    <button type="submit">Betal</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Brand / Hero section -->
+    <header class="hero page-shell">
+        <div class="hero-top">
+            <div class="brand-row">
+                <img class="brand-cupcake" src="/images/purple-cupcake.png" alt="Cupcake" />
+
+                <div class="brand-copy">
+                    <h1 class="brand-title">Olsker Cupcakes</h1>
+                    <p class="brand-subtitle">Små cupcakes, store smil</p>
+                </div>
+
+                <img class="brand-cupcake" src="/images/purple-cupcake.png" alt="Cupcake" />
+            </div>
         </div>
 
-        <div class="site-nav-right">
-            <span th:if="${currentUser != null}">
-                Logget ind som: <span th:text="${currentUser.email}">bruger@mail.dk</span>
-            </span>
+        <!-- Navigation -->
+        <nav class="nav-bar">
+            <a class="nav-link" href="#vores-cupcakes">Vores cupcakes</a>
+            <a class="nav-link" href="#om-os">Om os</a>
+            <a class="nav-link" href="#kontakt">Kontakt</a>
+        </nav>
+    </header>
 
-            <a th:if="${currentUser != null}" th:href="@{/logout}" href="/logout">Log ud</a>
-            <a th:if="${currentUser == null}" th:href="@{/login}" href="/login">Log ind</a>
-        </div>
-    </nav>
-</header>
+</div>
+</body>
+</html>
