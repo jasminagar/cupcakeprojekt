@@ -15,11 +15,44 @@ public class OrderService {
     private Database db;
     UserService userService = new UserService(db);
 
+
     public OrderService(Database database,UserService userService, BottomService bottomService, ToppingService toppingService) {
         this.database = database;
         this.userService = userService;
         this.bottomService = bottomService;
         this.toppingService = toppingService;
+    }
+
+    public List<Order> getOrdersByUserId(int userId) {
+        List<Order> orders = new ArrayList<>();
+        String sql = """
+        SELECT o.id, o.user_id, u.email, o.pickup_time, o.total_price
+        FROM orders o
+        JOIN users u ON o.user_id = u.id
+        WHERE o.user_id = ?
+        ORDER BY o.pickup_time DESC
+    """;
+
+        try (Connection con = database.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Order order = new Order();
+                    order.setId(rs.getInt("id"));
+                    order.setUserId(rs.getInt("user_id"));
+                    order.setEmail(rs.getString("email"));
+                    order.setPickupTime(rs.getTimestamp("pickup_time").toLocalDateTime());
+                    order.setTotalPrice(rs.getDouble("total_price"));
+                    orders.add(order);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orders;
     }
 
     public List<OrderLine> getAllOrderLines() {

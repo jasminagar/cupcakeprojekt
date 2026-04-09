@@ -1,0 +1,114 @@
+/* header.css */
+
+/* Top navigation / user info */
+.site-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.cart-dropdown-wrapper {
+    position: relative;
+}
+
+.cart-count {
+    margin-left: 6px;
+}
+
+.cart-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    color: #111;
+    border-radius: 12px;
+    padding: 14px;
+    width: 280px;
+    display: none;
+    z-index: 60;
+}
+
+.cart-item {
+    display: grid;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* Brand / Hero section */
+.hero {
+    background: linear-gradient(to bottom, #340053 0%, #4f1a69 55%, #b47fd4 100%);
+    border-left: 10px solid rgba(211, 160, 223, 0.55);
+    border-right: 10px solid rgba(211, 160, 223, 0.55);
+    border-bottom: 10px solid rgba(211, 160, 223, 0.55);
+}
+
+.hero-top {
+    padding: 22px 28px 8px;
+}
+
+.brand-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 120px;
+    align-items: center;
+    gap: 18px;
+}
+
+.brand-cupcake {
+    width: min(10vw, 112px);
+    min-width: 70px;
+    justify-self: center;
+}
+
+.brand-copy {
+    text-align: center;
+}
+
+.brand-title {
+    font-family: "Italianno", cursive;
+    font-weight: 400;
+    line-height: 0.9;
+    font-size: clamp(3.5rem, 6.2vw, 8rem);
+    margin-bottom: 8px;
+}
+
+.brand-subtitle {
+    font-family: "Italianno", cursive;
+    font-size: clamp(2.6rem, 4.6vw, 6rem);
+    line-height: 0.95;
+}
+
+/* Navigation */
+.nav-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    border-top: 2px solid rgba(255, 255, 255, 0.9);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+    min-height: 112px;
+}
+
+.nav-link {
+    text-align: center;
+    font-size: clamp(1.8rem, 2.4vw, 3rem);
+    padding: 28px 16px;
+    position: relative;
+}
+
+.nav-link + .nav-link::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 58px;
+    background: rgba(255, 255, 255, 0.85);
+}

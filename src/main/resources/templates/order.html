@@ -8,7 +8,8 @@
 </head>
 <body>
 
-<div th:replace="fragments/header :: header"></div>
+<!-- Header -->
+<div th:replace="~{fragments/header :: header}"></div>
 
 <main class="form-page">
     <section class="form-card order-card">
@@ -18,7 +19,8 @@
         <p>Antal toppings: <span th:text="${#lists.size(toppings)}">0</span></p>
         <p>Din saldo: <span th:text="${currentUser.balance}">0</span> kr.</p>
 
-        <form action="/orders" method="post" th:object="${orderRequest}" class="login-form">
+        <!-- Formular til at tilføje til session-kurv -->
+        <form th:action="@{/cart/add}" method="post" th:object="${orderRequest}" class="login-form">
             <label for="bottom">Vælg bund</label>
             <select name="bottomId" id="bottom" required>
                 <option th:each="bottom : ${bottoms}"
@@ -41,9 +43,7 @@
             <label for="pickupTime">Afhentningstid</label>
             <input type="datetime-local" name="pickupTime" id="pickupTime" required>
 
-            <input type="hidden" name="userId" th:value="${currentUser.id}" />
-
-            <button type="submit">Bestil</button>
+            <button type="submit">Tilføj til kurv</button>
         </form>
     </section>
 </main>

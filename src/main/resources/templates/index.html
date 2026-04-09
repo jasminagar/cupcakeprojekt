@@ -10,40 +10,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Italianno&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/header.css">
 </head>
 <body>
 
-<div th:replace="fragments/header :: header"></div>
-
-<div class="cart-overlay" id="cartOverlay"></div>
-
-<aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
-    <div class="cart-head">
-        <h2>Din kurv</h2>
-        <button class="close-cart" id="closeCart" type="button" aria-label="Luk kurv">×</button>
-    </div>
-
-    <div class="cart-items">
-        <div class="cart-item">
-            <strong>Vanilla + Strawberry</strong>
-            <span>Antal: 2</span>
-            <span>Pris: 22,00 kr</span>
-        </div>
-        <div class="cart-item">
-            <strong>Chocolate + Blueberry</strong>
-            <span>Antal: 1</span>
-            <span>Pris: 10,00 kr</span>
-        </div>
-    </div>
-
-    <div class="cart-footer">
-        <div class="cart-total">
-            <span>Total</span>
-            <span>32,00 kr</span>
-        </div>
-        <a class="cart-checkout" href="/order">Gå til bestilling</a>
-    </div>
-</aside>
+<div th:replace="~{fragments/header :: header}"></div>
 
 <header class="hero page-shell">
     <div class="hero-top">
