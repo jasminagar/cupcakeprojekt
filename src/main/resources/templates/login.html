@@ -1,21 +1,33 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Login</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css">
 </head>
 <body>
 
-<h1>Login</h1>
+<div th:replace="fragments/header :: header"></div>
 
-<form method="post" action="/login">
-    <label>Email</label>
-    <input name="email" required>
-    <label>Username</label>
-    <input name="username" required>
-    <label>Password</label>
-    <input name="password" type="password" required>
-    <button type="submit">Login</button>
-</form>
+<main class="form-page">
+    <section class="form-card">
+        <h1>Login</h1>
+
+        <form method="post" action="/login" class="login-form">
+            <label for="email">Email</label>
+            <input id="email" name="email" required>
+
+            <label for="username">Username</label>
+            <input id="username" name="username" required>
+
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+    </section>
+</main>
+
 </body>
 </html>

@@ -1,16 +1,168 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Login</title>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Olsker Cupcakes</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Italianno&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
-<p>Login</p>
-<a href="/login">Login</a>
+<div th:replace="fragments/header :: header"></div>
 
+<div class="cart-overlay" id="cartOverlay"></div>
 
-<p>Don´t have a user? Register here</p>
-<a href="/registerUser">Register</a>
+<aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-head">
+        <h2>Din kurv</h2>
+        <button class="close-cart" id="closeCart" type="button" aria-label="Luk kurv">×</button>
+    </div>
+
+    <div class="cart-items">
+        <div class="cart-item">
+            <strong>Vanilla + Strawberry</strong>
+            <span>Antal: 2</span>
+            <span>Pris: 22,00 kr</span>
+        </div>
+        <div class="cart-item">
+            <strong>Chocolate + Blueberry</strong>
+            <span>Antal: 1</span>
+            <span>Pris: 10,00 kr</span>
+        </div>
+    </div>
+
+    <div class="cart-footer">
+        <div class="cart-total">
+            <span>Total</span>
+            <span>32,00 kr</span>
+        </div>
+        <a class="cart-checkout" href="/order">Gå til bestilling</a>
+    </div>
+</aside>
+
+<header class="hero page-shell">
+    <div class="hero-top">
+        <div class="top-actions">
+            <a class="login-link" href="/login">Log ind</a>
+            <button class="cart-button" id="openCart" type="button" aria-label="Åbn kurv">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="9" cy="20" r="1.6"></circle>
+                    <circle cx="18" cy="20" r="1.6"></circle>
+                    <path d="M3 4h2l2.1 9.2a1 1 0 0 0 1 .8h9.9a1 1 0 0 0 1-.8L21 7H7.2"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="brand-row">
+            <img class="brand-cupcake" src="/images/purple-cupcake.png" alt="Cupcake" />
+
+            <div class="brand-copy">
+                <h1 class="brand-title">Olsker Cupcakes</h1>
+                <p class="brand-subtitle">Små cupcakes, store smil</p>
+            </div>
+
+            <img class="brand-cupcake" src="/images/purple-cupcake.png" alt="Cupcake" />
+        </div>
+    </div>
+
+    <nav class="nav-bar">
+        <a class="nav-link" href="#vores-cupcakes">Vores cupcakes</a>
+        <a class="nav-link" href="#om-os">Om os</a>
+        <a class="nav-link" href="#kontakt">Kontakt</a>
+    </nav>
+
+    <div class="hero-image-wrap">
+        <img class="hero-image" src="/images/cupcake-hero.png" alt="Der sprøjtes smørcreme på cupcakes" />
+    </div>
+</header>
+
+<main>
+    <section id="vores-cupcakes" class="section-pink page-shell">
+        <div class="section-header">
+            <h2 class="section-title">Vores cupcakes</h2>
+            <img class="section-cupcake" src="/images/pink-cupcake.png" alt="Lyserød cupcake" />
+        </div>
+
+        <div class="intro-grid">
+            <div class="intro-card">
+                <p>
+                    Gå på opdagelse i vores udvalg af lækre cupcakebunde og smørcremer og sammensæt din helt egen cupcake –
+                    eller vælg blandt vores færdiglavede favoritter.
+                </p>
+            </div>
+
+            <div class="jump-links">
+                <a class="jump-card" href="#bunde">Klik her for at se vores udvalg af bunde</a>
+                <a class="jump-card" href="#smorcremer">Klik her for at se vores udvalg af smørcremer</a>
+                <a class="cta-link" href="/order">Klik her for at bestille</a>
+            </div>
+        </div>
+
+        <section id="bunde" class="listing-block">
+            <h3 class="listing-title">Her er vores brede udvalg af cupcakebunde</h3>
+
+            <div class="listing-grid">
+                <div class="listing-column">
+                    <div class="menu-item"><span>Chocolate</span><span class="price">5.00</span><img src="/images/chocolate-bottom.png" alt="Chocolate cupcake" /></div>
+                    <div class="menu-item"><span>Vanilla</span><span class="price">5.00</span><img src="/images/vanilla-bottom.png" alt="Vanilla cupcake" /></div>
+                    <div class="menu-item"><span>Nutmeg</span><span class="price">5.00</span><img src="/images/nutmeg-bottom.png" alt="Nutmeg cupcake" /></div>
+                </div>
+
+                <div class="listing-column">
+                    <div class="menu-item"><span>Pistachio</span><span class="price">6.00</span><img src="/images/pistachio-bottom.png" alt="Pistachio cupcake" /></div>
+                    <div class="menu-item"><span>Almond</span><span class="price">7.00</span><img src="/images/almond-bottom.png" alt="Almond cupcake" /></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="smorcremer" class="listing-block">
+            <h3 class="listing-title">Her er vores udvalg af smørcremer</h3>
+
+            <div class="listing-grid">
+                <div class="listing-column">
+                    <div class="menu-item"><span>Chocolate</span><span class="price">5.00</span><img src="/images/chocolate-buttercream.png" alt="Chocolate buttercream" /></div>
+                    <div class="menu-item"><span>Blueberry</span><span class="price">5.00</span><img src="/images/blueberry-buttercream.png" alt="Blueberry buttercream" /></div>
+                    <div class="menu-item"><span>Raspberry</span><span class="price">5.00</span><img src="/images/raspberry-buttercream.png" alt="Raspberry buttercream" /></div>
+                    <div class="menu-item"><span>Crispy</span><span class="price">6.00</span><img src="/images/crispy-buttercream.png" alt="Crispy buttercream" /></div>
+                    <div class="menu-item"><span>Blue cheese</span><span class="price">9.00</span><img src="/images/blue-cheese-buttercream.png" alt="Blue cheese buttercream" /></div>
+                </div>
+
+                <div class="listing-column">
+                    <div class="menu-item"><span>Strawberry</span><span class="price">6.00</span><img src="/images/strawberry-buttercream.png" alt="Strawberry buttercream" /></div>
+                    <div class="menu-item"><span>Rum/Raisin</span><span class="price">7.00</span><img src="/images/rum-raisin-buttercream.png" alt="Rum raisin buttercream" /></div>
+                    <div class="menu-item"><span>Orange</span><span class="price">8.00</span><img src="/images/orange-buttercream.png" alt="Orange buttercream" /></div>
+                    <div class="menu-item"><span>Lemon</span><span class="price">8.00</span><img src="/images/lemon-buttercream.png" alt="Lemon buttercream" /></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="om-os" class="listing-block">
+            <h3 class="listing-title">Om os</h3>
+            <div class="intro-card section-box narrow-box">
+                <p>
+                    Hos Olsker Cupcakes bager vi med kærlighed og fokus på smag, hygge og små søde øjeblikke.
+                </p>
+            </div>
+        </section>
+
+        <section id="kontakt" class="listing-block">
+            <h3 class="listing-title">Kontakt</h3>
+            <div class="intro-card section-box contact-box">
+                <p>
+                    E-mail: kontakt@olskercupcakes.dk<br>
+                    Telefon: 12 34 56 78<br>
+                    Adresse: Olsker, Bornholm
+                </p>
+            </div>
+        </section>
+    </section>
+</main>
+
+<script src="/js/script.js"></script>
 </body>
 </html>

@@ -1,23 +1,17 @@
-<!-- header.html -->
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <!-- evt. CSS/JS -->
-</head>
-<body>
-<header>
-    <nav>
-        <ul>
-            <li><a th:href="@{/}">Hjem</a></li>
-            <li><a th:href="@{/order}">Bestil</a></li>
-            <li th:if="${currentUser != null}">
-                Logget ind som: <span th:text="${currentUser.email}"></span>
-            </li>
-            <li th:if="${currentUser != null}">
-                <a th:href="@{/logout}">Log ud</a>
-            </li>
-        </ul>
+<header th:fragment="header" class="site-header">
+    <nav class="site-nav page-shell">
+        <div class="site-nav-left">
+            <a th:href="@{/}" href="/">Hjem</a>
+            <a th:href="@{/order}" href="/order">Bestil</a>
+        </div>
+
+        <div class="site-nav-right">
+            <span th:if="${currentUser != null}">
+                Logget ind som: <span th:text="${currentUser.email}">bruger@mail.dk</span>
+            </span>
+
+            <a th:if="${currentUser != null}" th:href="@{/logout}" href="/logout">Log ud</a>
+            <a th:if="${currentUser == null}" th:href="@{/login}" href="/login">Log ind</a>
+        </div>
     </nav>
 </header>
-</body>
-</html>
