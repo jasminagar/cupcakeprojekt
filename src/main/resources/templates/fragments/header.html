@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html lang="da" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Olsker Cupcakes</title>
-    <link rel="stylesheet" href="/css/styles.css" />
-</head>
-<body>
 <div th:fragment="header">
 
     <!-- Top navigation / user info -->
@@ -16,7 +8,6 @@
         <a th:if="${currentUser != null}" th:href="@{/logout}">Log ud</a>
         <a th:if="${currentUser == null}" th:href="@{/login}">Log ind</a>
 
-        <!-- Cart dropdown -->
         <div class="cart-dropdown-wrapper">
             <button id="cartButton" type="button" aria-label="Åbn kurv">
                 🛒
@@ -27,16 +18,20 @@
                 <div th:if="${cart == null || #lists.isEmpty(cart)}">Din kurv er tom</div>
 
                 <div th:each="item, iterStat : ${cart}" class="cart-item">
-                    <strong th:text="${item.bottomName} + ' + ' + item.toppingName">Cupcake + Topping</strong>
+                    <strong th:text="${item.bottomName} + ' + ' + item.toppingName">Cupcake</strong>
                     <span>Antal: <span th:text="${item.quantity}">1</span></span>
                     <span>Pris: <span th:text="${#numbers.formatDecimal(item.totalPrice,1,2)}">0.00</span> kr</span>
+
                     <form th:action="@{'/cart/remove/' + ${iterStat.index}}" method="post">
                         <button type="submit">Slet</button>
                     </form>
                 </div>
 
                 <div class="cart-total">
-                    Total: <span th:text="${#numbers.formatDecimal(totalCartPrice != null ? totalCartPrice : 0,1,2)}">0.00</span> kr
+                    Total:
+                    <span th:text="${#numbers.formatDecimal(totalCartPrice != null ? totalCartPrice : 0,1,2)}">
+                        0.00
+                    </span> kr
                 </div>
 
                 <form th:action="@{/checkout}" method="post">
@@ -46,7 +41,7 @@
         </div>
     </div>
 
-    <!-- Brand / Hero section -->
+    <!-- HERO / HEADER -->
     <header class="hero page-shell">
         <div class="hero-top">
             <div class="brand-row">
@@ -67,8 +62,11 @@
             <a class="nav-link" href="#om-os">Om os</a>
             <a class="nav-link" href="#kontakt">Kontakt</a>
         </nav>
+
+        <!-- 🔥 HERO BILLEDE -->
+        <div class="hero-image-wrap">
+            <img class="hero-image" src="/images/cupcake-hero.png" alt="Der sprøjtes smørcreme på cupcakes" />
+        </div>
     </header>
 
 </div>
-</body>
-</html>

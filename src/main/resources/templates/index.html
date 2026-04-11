@@ -14,43 +14,8 @@
 </head>
 <body>
 
+<!-- HEADER (kun én gang!) -->
 <div th:replace="~{fragments/header :: header}"></div>
-
-<header class="hero page-shell">
-    <div class="hero-top">
-        <div class="top-actions">
-            <a class="login-link" href="/login">Log ind</a>
-            <button class="cart-button" id="openCart" type="button" aria-label="Åbn kurv">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="9" cy="20" r="1.6"></circle>
-                    <circle cx="18" cy="20" r="1.6"></circle>
-                    <path d="M3 4h2l2.1 9.2a1 1 0 0 0 1 .8h9.9a1 1 0 0 0 1-.8L21 7H7.2"></path>
-                </svg>
-            </button>
-        </div>
-
-        <div class="brand-row">
-            <img class="brand-cupcake" src="/images/purple-cupcake.png" alt="Cupcake" />
-
-            <div class="brand-copy">
-                <h1 class="brand-title">Olsker Cupcakes</h1>
-                <p class="brand-subtitle">Små cupcakes, store smil</p>
-            </div>
-
-            <img class="brand-cupcake" src="/images/purple-cupcake.png" alt="Cupcake" />
-        </div>
-    </div>
-
-    <nav class="nav-bar">
-        <a class="nav-link" href="#vores-cupcakes">Vores cupcakes</a>
-        <a class="nav-link" href="#om-os">Om os</a>
-        <a class="nav-link" href="#kontakt">Kontakt</a>
-    </nav>
-
-    <div class="hero-image-wrap">
-        <img class="hero-image" src="/images/cupcake-hero.png" alt="Der sprøjtes smørcreme på cupcakes" />
-    </div>
-</header>
 
 <main>
     <section id="vores-cupcakes" class="section-pink page-shell">
@@ -74,6 +39,7 @@
             </div>
         </div>
 
+        <!-- Bunde -->
         <section id="bunde" class="listing-block">
             <h3 class="listing-title">Her er vores brede udvalg af cupcakebunde</h3>
 
@@ -91,6 +57,7 @@
             </div>
         </section>
 
+        <!-- Smørcremer -->
         <section id="smorcremer" class="listing-block">
             <h3 class="listing-title">Her er vores udvalg af smørcremer</h3>
 
@@ -112,6 +79,7 @@
             </div>
         </section>
 
+        <!-- Om os -->
         <section id="om-os" class="listing-block">
             <h3 class="listing-title">Om os</h3>
             <div class="intro-card section-box narrow-box">
@@ -121,6 +89,7 @@
             </div>
         </section>
 
+        <!-- Kontakt -->
         <section id="kontakt" class="listing-block">
             <h3 class="listing-title">Kontakt</h3>
             <div class="intro-card section-box contact-box">
