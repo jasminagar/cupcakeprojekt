@@ -46,6 +46,7 @@ public class UserController {
         if (user != null) {
             ctx.sessionAttribute("currentUser", user);
 
+//********Med i rapporten/sql med***********
             if ("admin".equals(user.getRole())) {
                 ctx.redirect("/admin");
             } else {

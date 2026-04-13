@@ -7,6 +7,7 @@ CREATE TABLE users (
 alter table users
 add balance int;
 
+******Rapport********'
 ALTER TABLE users ADD COLUMN role VARCHAR(20) DEFAULT 'user';
 
 ALTER TABLE users ADD COLUMN email VARCHAR(255) UNIQUE;

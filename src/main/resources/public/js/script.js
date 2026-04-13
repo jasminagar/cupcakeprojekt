@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
         cartWrapper.classList.toggle("show");
     });
 
-    // Luk dropdown hvis man klikker udenfor
     document.addEventListener("click", (e) => {
         if (!cartWrapper.contains(e.target)) {
             cartWrapper.classList.remove("show");
