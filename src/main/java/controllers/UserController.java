@@ -1,99 +1,88 @@
 package controllers;
 
-import entities.CupcakeBottom;
-import entities.CupcakeTop;
-import entities.OrderRequest;
 import entities.User;
 import io.javalin.Javalin;
-import services.BottomService;
-import services.ToppingService;
+import io.javalin.http.Context;
 import services.UserService;
-
-import java.util.List;
 
 public class UserController {
 
-    public UserController(Javalin app, UserService userService) {
+    public static void addRoutes(Javalin app, UserService userService) {
 
-        app.before(ctx -> {
-            User currentUser = ctx.sessionAttribute("currentUser");
-            if (currentUser != null) {
-                ctx.attribute("currentUser", currentUser);
-            }
-        });
+        app.get("/login", ctx -> showLogin(ctx));
+        app.post("/login", ctx -> login(ctx, userService));
+        app.get("/logout", ctx -> logout(ctx));
 
-        app.get("/registerUser", ctx -> ctx.render("registerUser"));
-        app.post("/registerUser", ctx -> {
-            String username = ctx.formParam("username");
-            String password = ctx.formParam("password");
-            double balance = Double.parseDouble(ctx.formParam("balance"));
+        app.get("/registerUser", ctx -> showRegister(ctx));
+        app.post("/registerUser", ctx -> register(ctx, userService));
+    }
 
-            if (username == null || password == null) {
-                ctx.status(400).result("Username and password required");
-                return;
-            }
+    private static void showLogin(Context ctx) {
+        ctx.render("login");
+    }
 
-            String trimUsername = username.trim();
-            if (trimUsername.length() < 4) {
-                ctx.status(400).result("Invalid username. Must be at least 4 characters");
-                return;
-            }
+    private static void showRegister(Context ctx) {
+        ctx.render("registerUser");
+    }
 
-            boolean created = userService.createUser(trimUsername, username.trim(), password.trim(), balance);
+    private static void logout(Context ctx) {
+        ctx.req().getSession().invalidate();
+        ctx.redirect("/");
+    }
 
-            if (created) {
-                ctx.status(201).result("User created successfully");
-                ctx.redirect("/login");
+    private static void login(Context ctx, UserService userService) {
+
+        String email = ctx.formParam("email");
+        String username = ctx.formParam("username");
+        String password = ctx.formParam("password");
+
+        if (username == null || password == null) {
+            ctx.status(400).result("Username and password required");
+            return;
+        }
+
+        User user = userService.login(email.trim(), username.trim(), password.trim());
+
+        if (user != null) {
+            ctx.sessionAttribute("currentUser", user);
+
+            if ("admin".equals(user.getRole())) {
+                ctx.redirect("/admin");
             } else {
-                ctx.status(409).result("Username already exists");
+                ctx.redirect("/order");
             }
-        });
-        //Til at liste alle brugere
-        app.get("/users", ctx -> {
-            ctx.attribute("users", userService.getAllUsers());
-            ctx.render("users.html");
-        });
+        } else {
+            ctx.attribute("message", "Forkert mail eller kodeord");
+            ctx.render("login");
+        }
+    }
 
-        app.get("/users/{username}", ctx -> {
-            String username = ctx.pathParam("username"); // virker som før
-            var user = userService.getUserByUsername(username);
+    private static void register(Context ctx, UserService userService) {
 
-            if (user != null) {
-                ctx.attribute("user", user);
-                ctx.render("user");
-            } else {
-                ctx.status(404).result("User not found");
-            }
-        });
+        String username = ctx.formParam("username");
+        String password = ctx.formParam("password");
+        double balance = Double.parseDouble(ctx.formParam("balance"));
 
-        app.get("/login", context -> {
-            context.render("login");
-        });
-        app.post("/login", ctx -> {
-            String email = ctx.formParam("email");
-            String username = ctx.formParam("username");
-            String password = ctx.formParam("password");
+        if (username == null || password == null) {
+            ctx.status(400).result("Username and password required");
+            return;
+        }
 
-            if (username == null || password == null) {
-                ctx.status(400).result("Username and password required");
-                return;
-            }
+        String trimUsername = username.trim();
 
-            User user = userService.login(email.trim(), username.trim(), password.trim());
+        if (trimUsername.length() < 4) {
+            ctx.attribute("message", "Username skal være mindst 4 tegn");
+            ctx.render("registerUser");
+            return;
+        }
 
-            if (user != null) {
-                ctx.sessionAttribute("currentUser", user);
+        boolean created = userService.createUser(trimUsername, trimUsername, password.trim(), balance);
 
-                if ("admin".equals(user.getRole())) {
-                    ctx.redirect("/admin");
-                } else {
-                    ctx.redirect("/order");
-                }
-
-            } else {
-                ctx.status(401).result("Forkert mail eller kdeord");
-            }
-        });
-
+        if (created) {
+            ctx.redirect("/login");
+        } else {
+            ctx.attribute("message", "Username findes allerede");
+            ctx.render("registerUser");
+        }
     }
 }

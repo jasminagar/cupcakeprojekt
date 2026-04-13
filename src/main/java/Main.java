@@ -3,6 +3,7 @@ import config.ThymeleafConfig;
 import controllers.AdminController;
 import controllers.OrderController;
 import controllers.UserController;
+import entities.User;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
 import persistence.Database;
@@ -24,6 +25,27 @@ public class Main {
             config.fileRenderer(new JavalinThymeleaf(ThymeleafConfig.templateEngine()));
         }).start(7070);
 
+//************Med i rapporten***********
+        app.before(ctx -> {
+            User user = ctx.sessionAttribute("currentUser");
+            if (user != null) {
+                ctx.attribute("currentUser", user);
+            }
+        });
+
+        app.before("/order", ctx -> {
+            if (ctx.sessionAttribute("currentUser") == null) {
+                ctx.redirect("/login");
+            }
+        });
+
+        app.before("/admin", ctx -> {
+            User user = ctx.sessionAttribute("currentUser");
+            if (user == null || !"admin".equals(user.getRole())) {
+                ctx.redirect("/login");
+            }
+        });
+
         UserService userService = new UserService(db);
         BottomService bottomService = new BottomService(db);
         ToppingService toppingService = new ToppingService(db);
@@ -31,8 +53,8 @@ public class Main {
 
         app.get("/", ctx -> ctx.render("index.html"));
 
-        new AdminController(app, userService, orderService);
-        new UserController(app, userService);
-        new OrderController(app, orderService, userService, bottomService, toppingService);
+        AdminController.addRoutes(app, userService, orderService);
+        OrderController.addRoutes(app, orderService, userService, bottomService, toppingService);
+        UserController.addRoutes(app, userService);
     }
 }

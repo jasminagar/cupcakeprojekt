@@ -2,187 +2,161 @@ package controllers;
 
 import entities.*;
 import io.javalin.Javalin;
+import io.javalin.http.Context;
 import services.BottomService;
 import services.OrderService;
 import services.ToppingService;
 import services.UserService;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderController {
 
-    public OrderController(Javalin app,
-                           OrderService orderService,
-                           UserService userService,
-                           BottomService bottomService,
-                           ToppingService toppingService) {
+    public static void addRoutes(Javalin app,
+                                 OrderService orderService,
+                                 UserService userService,
+                                 BottomService bottomService,
+                                 ToppingService toppingService) {
 
-        app.get("/order", ctx -> {
-            User sessionUser = ctx.sessionAttribute("currentUser");
+        app.get("/order", ctx -> showOrderPage(ctx, userService, bottomService, toppingService));
 
-            if (sessionUser == null) {
-                ctx.redirect("/login");
-                return;
+        app.post("/cart/add", ctx -> addToCart(ctx, bottomService, toppingService));
+
+        app.post("/cart/remove/{index}", ctx -> removeFromCart(ctx));
+
+        app.post("/checkout", ctx -> checkout(ctx, orderService));
+    }
+
+    private static void showOrderPage(Context ctx,
+                                      UserService userService,
+                                      BottomService bottomService,
+                                      ToppingService toppingService) {
+
+        User sessionUser = ctx.sessionAttribute("currentUser");
+
+        if (sessionUser == null) {
+            ctx.redirect("/login");
+            return;
+        }
+
+        User currentUser = userService.getUserById(sessionUser.getId());
+
+        if (currentUser == null) {
+            ctx.redirect("/login");
+            return;
+        }
+
+        List<CupcakeBottom> bottoms = bottomService.getAllBottoms();
+        List<CupcakeTop> toppings = toppingService.getAllTops();
+
+        List<CartItem> cart = ctx.sessionAttribute("cart");
+        if (cart == null) {
+            cart = new ArrayList<>();
+            ctx.sessionAttribute("cart", cart);
+        }
+
+        double totalCartPrice = cart.stream()
+                .mapToDouble(CartItem::getTotalPrice)
+                .sum();
+
+        ctx.attribute("bottoms", bottoms);
+        ctx.attribute("toppings", toppings);
+        ctx.attribute("orderRequest", new OrderRequest());
+        ctx.attribute("currentUser", currentUser);
+        ctx.attribute("balance", currentUser.getBalance());
+        ctx.attribute("cart", cart);
+        ctx.attribute("totalCartPrice", totalCartPrice);
+
+        ctx.render("order.html");
+    }
+
+    private static void addToCart(Context ctx,
+                                  BottomService bottomService,
+                                  ToppingService toppingService) {
+
+        User sessionUser = ctx.sessionAttribute("currentUser");
+
+        if (sessionUser == null) {
+            ctx.redirect("/login");
+            return;
+        }
+
+        int bottomId = Integer.parseInt(ctx.formParam("bottomId"));
+        int toppingId = Integer.parseInt(ctx.formParam("toppingId"));
+        int quantity = Integer.parseInt(ctx.formParam("quantity"));
+
+        CupcakeBottom bottom = bottomService.getBottomById(bottomId);
+        CupcakeTop topping = toppingService.getTopById(toppingId);
+
+        double totalPrice = (bottom.getPrice() + topping.getPrice()) * quantity;
+
+        CartItem item = new CartItem();
+        item.setBottomId(bottomId);
+        item.setToppingId(toppingId);
+        item.setBottomName(bottom.getFlavour());
+        item.setToppingName(topping.getFlavour());
+        item.setQuantity(quantity);
+        item.setTotalPrice(totalPrice);
+
+        List<CartItem> cart = ctx.sessionAttribute("cart");
+
+        if (cart == null) {
+            cart = new ArrayList<>();
+        }
+
+        cart.add(item);
+        ctx.sessionAttribute("cart", cart);
+
+        ctx.redirect("/order");
+    }
+
+    private static void removeFromCart(Context ctx) {
+
+        List<CartItem> cart = ctx.sessionAttribute("cart");
+
+        if (cart != null) {
+            int index = Integer.parseInt(ctx.pathParam("index"));
+
+            if (index >= 0 && index < cart.size()) {
+                cart.remove(index);
             }
 
-            User currentUser = userService.getUserById(sessionUser.getId());
+            ctx.sessionAttribute("cart", cart);
+        }
 
-            if (currentUser == null) {
-                ctx.redirect("/login");
-                return;
-            }
+        ctx.redirect("/order");
+    }
 
-            List<CupcakeBottom> bottoms = bottomService.getAllBottoms();
-            List<CupcakeTop> toppings = toppingService.getAllTops();
+    private static void checkout(Context ctx, OrderService orderService) {
 
-            List<CartItem> cart = ctx.sessionAttribute("cart");
-            if (cart == null){
-                cart = new ArrayList<>();
-                ctx.sessionAttribute("cart", cart);
-            }
+        User sessionUser = ctx.sessionAttribute("currentUser");
 
-            double totalCartPrice = cart.stream()
-                    .mapToDouble(CartItem::getTotalPrice)
-                    .sum();
+        if (sessionUser == null) {
+            ctx.redirect("/login");
+            return;
+        }
 
-            ctx.attribute("bottoms", bottoms);
-            ctx.attribute("toppings", toppings);
-            ctx.attribute("orderRequest", new OrderRequest());
-            ctx.attribute("currentUser", currentUser);
-            ctx.attribute("balance", currentUser.getBalance());
+        List<CartItem> cart = ctx.sessionAttribute("cart");
 
-            ctx.attribute("cart", cart);
-            ctx.attribute("totalCartPrice", totalCartPrice);
+        if (cart == null || cart.isEmpty()) {
+            ctx.redirect("/order");
+            return;
+        }
 
-            ctx.render("order.html");
-        });
+        for (CartItem item : cart) {
+            OrderRequest request = new OrderRequest();
+            request.setBottomId(item.getBottomId());
+            request.setToppingId(item.getToppingId());
+            request.setQuantity(item.getQuantity());
+            request.setUserId(sessionUser.getId());
+            request.setPickupTime(LocalDateTime.now().plusDays(1));
 
-        app.post("/cart/remove/{index}", context -> {
-           List<CartItem> cart = context.sessionAttribute("cart");
+            orderService.createOrder(request);
+        }
 
-           if (cart != null){
-               int index = Integer.parseInt(context.pathParam("index"));
-
-               if (index >= 0 && index < cart.size()){
-                   cart.remove(index);
-               }
-
-               context.sessionAttribute("cart", cart);
-           }
-
-           context.redirect("/order");
-        });
-
-        app.post("/checkout", context -> {
-            User sessionUser = context.sessionAttribute("currentUser");
-
-            if (sessionUser == null) {
-                context.redirect("/login");
-                return;
-            }
-
-            List<CartItem> cart = context.sessionAttribute("cart");
-
-            if (cart == null || cart.isEmpty()) {
-                context.redirect("/order");
-                return;
-            }
-
-            for (CartItem item : cart){
-                OrderRequest request = new OrderRequest();
-                request.setBottomId(item.getBottomId());
-                request.setToppingId(item.getToppingId());
-                request.setQuantity(item.getQuantity());
-                request.setUserId(sessionUser.getId());
-                request.setPickupTime(LocalDateTime.now().plusDays(1));
-
-                orderService.createOrder(request);
-            }
-
-            context.sessionAttribute("cart", new ArrayList<CartItem>());
-            context.redirect("/order");
-        });
-
-        app.post("/cart/add", context -> {
-           User sessionUser = context.sessionAttribute("currentUser");
-
-           if (sessionUser == null){
-               context.redirect("/login");
-           }
-
-           int bottomId = Integer.parseInt(context.formParam("bottomId"));
-           int topId = Integer.parseInt(context.formParam("toppingId"));
-           int quantity = Integer.parseInt(context.formParam("quantity"));
-
-           CupcakeBottom cupcakeBottom = bottomService.getBottomById(bottomId);
-           CupcakeTop cupcakeTop = toppingService.getTopById(topId);
-
-            double totalPrice = (cupcakeBottom.getPrice() + cupcakeTop.getPrice()) * quantity;
-
-            CartItem item = new CartItem();
-            item.setBottomId(bottomId);
-            item.setToppingId(topId);
-            item.setBottomName(cupcakeBottom.getFlavour());
-            item.setToppingName(cupcakeTop.getFlavour());
-            item.setQuantity(quantity);
-            item.setTotalPrice(totalPrice);
-
-            List<CartItem> cart = context.sessionAttribute("cart");
-
-            if (cart == null){
-                cart = new ArrayList<>();
-            }
-
-            cart.add(item);
-
-            context.sessionAttribute("cart", cart);
-
-            context.redirect("/order");
-        });
-
-        /*app.post("/orders", ctx -> {
-            try {
-                User sessionUser = ctx.sessionAttribute("currentUser");
-
-                if (sessionUser == null) {
-                    ctx.redirect("/login");
-                    return;
-                }
-
-                int bottomId = Integer.parseInt(ctx.formParam("bottomId"));
-                int toppingId = Integer.parseInt(ctx.formParam("toppingId"));
-                int quantity = Integer.parseInt(ctx.formParam("quantity"));
-                String pickupTimeStr = ctx.formParam("pickupTime");
-                int userId = Integer.parseInt(ctx.formParam("userId"));
-
-                LocalDateTime pickupTime = LocalDateTime.parse(pickupTimeStr);
-
-                OrderRequest request = new OrderRequest();
-                request.setBottomId(bottomId);
-                request.setToppingId(toppingId);
-                request.setQuantity(quantity);
-                request.setPickupTime(pickupTime);
-                request.setUserId(userId);
-
-                OrderResponse response = orderService.createOrder(request);
-
-                if (response == null) {
-                    ctx.status(400).result("Kunne ikke oprette ordren");
-                } else {
-                    ctx.redirect("/order");
-                }
-
-            } catch (NumberFormatException e) {
-                ctx.status(400).result("Ugyldige tal i formularen");
-            } catch (DateTimeParseException e) {
-                ctx.status(400).result("Ugyldig afhentningstid");
-            } catch (Exception e) {
-                e.printStackTrace();
-                ctx.status(500).result("Der skete en fejl ved oprettelse af ordren");
-            }
-        });*/
+        ctx.sessionAttribute("cart", new ArrayList<CartItem>());
+        ctx.redirect("/order");
     }
 }

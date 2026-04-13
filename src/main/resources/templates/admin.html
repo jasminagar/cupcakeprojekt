@@ -5,12 +5,10 @@
 </head>
 <body>
 
-<!-- Fælles header -->
 <div th:replace="fragments/header :: header"></div>
 
 <h1>Admin Panel</h1>
 
-<!-- Sektion 1: Tilføj saldo -->
 <section>
     <h2>Tilføj saldo til bruger</h2>
     <form th:action="@{/admin/addBalance}" method="post">
@@ -26,7 +24,6 @@
 
 <hr>
 
-<!-- Sektion 2: Vis alle ordrer -->
 <section>
     <h2>Alle ordrer</h2>
     <table border="1">
@@ -41,7 +38,7 @@
         <tbody>
         <tr th:each="order : ${orders}">
             <td th:text="${order.id}"></td>
-            <td th:text="${order.email}"></td> <!-- fix: tidligere userEmail -->
+            <td th:text="${order.email}"></td>
             <td th:text="${order.pickupTime}"></td>
             <td th:text="${order.totalPrice}"></td>
         </tr>
@@ -51,7 +48,6 @@
 
 <hr>
 
-<!-- Sektion 3: Detaljer om ordrelinjer -->
 <section>
     <h2>Ordrelinjer</h2>
     <table border="1">
@@ -67,14 +63,16 @@
         <tbody>
         <tr th:each="line : ${orderLines}">
             <td th:text="${line.orderId}"></td>
-            <td th:text="${line.bottomFlavour}"></td> <!-- fix: tidligere bottomName -->
-            <td th:text="${line.topFlavour}"></td>    <!-- fix: tidligere topName -->
+            <td th:text="${line.bottomFlavour}"></td>
+            <td th:text="${line.topFlavour}"></td>
             <td th:text="${line.quantity}"></td>
             <td th:text="${line.linePrice}"></td>
         </tr>
         </tbody>
     </table>
 </section>
+
+<p th:if="${message}" th:text="${message}" style="color:green;"></p>
 
 </body>
 </html>
