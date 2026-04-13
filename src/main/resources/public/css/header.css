@@ -1,6 +1,4 @@
-/* header.css */
 
-/* Top navigation / user info */
 .site-nav-right {
     display: flex;
     align-items: center;
@@ -42,7 +40,7 @@
     margin-top: 10px;
 }
 
-/* Brand / Hero section */
+
 .hero {
     background: linear-gradient(to bottom, #340053 0%, #4f1a69 55%, #b47fd4 100%);
     border-left: 10px solid rgba(211, 160, 223, 0.55);
