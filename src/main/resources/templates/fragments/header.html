@@ -1,6 +1,6 @@
 <div th:fragment="header">
 
-    <!-- Top navigation / user info -->
+
     <div class="site-nav-right">
         <span th:if="${currentUser != null}">
             Logget ind som: <span th:text="${currentUser.email}">email@example.com</span>
@@ -41,7 +41,6 @@
         </div>
     </div>
 
-    <!-- HERO / HEADER -->
     <header class="hero page-shell">
         <div class="hero-top">
             <div class="brand-row">
@@ -56,14 +55,12 @@
             </div>
         </div>
 
-        <!-- Navigation -->
         <nav class="nav-bar">
             <a class="nav-link" href="#vores-cupcakes">Vores cupcakes</a>
             <a class="nav-link" href="#om-os">Om os</a>
             <a class="nav-link" href="#kontakt">Kontakt</a>
         </nav>
 
-        <!-- 🔥 HERO BILLEDE -->
         <div class="hero-image-wrap">
             <img class="hero-image" src="/images/cupcake-hero.png" alt="Der sprøjtes smørcreme på cupcakes" />
         </div>
