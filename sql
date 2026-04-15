@@ -92,3 +92,69 @@ where user_id in (
 delete from users
 where balance is null;
 
+dette virker på melissas computer:
+
+-- DROP først (valgfrit hvis du vil starte helt forfra)
+DROP TABLE IF EXISTS order_lines, orders, toppings, bottoms, users CASCADE;
+
+-- USERS
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    role VARCHAR(20) DEFAULT 'user',
+    balance NUMERIC(10,2)
+);
+
+-- BOTTOMS
+CREATE TABLE bottoms(
+    id SERIAL PRIMARY KEY,
+    flavour VARCHAR(50),
+    price NUMERIC(10,2)
+);
+
+-- TOPPINGS
+CREATE TABLE toppings(
+    id SERIAL PRIMARY KEY,
+    flavour VARCHAR(50),
+    price NUMERIC(10,2)
+);
+
+-- ORDERS
+CREATE TABLE orders(
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
+    pickup_time TIMESTAMP NOT NULL,
+    total_price NUMERIC(10,2) NOT NULL
+);
+
+-- ORDER_LINES
+CREATE TABLE order_lines(
+    id SERIAL PRIMARY KEY,
+    order_id INT REFERENCES orders(id),
+    bottom_id INT REFERENCES bottoms(id),
+    topping_id INT REFERENCES toppings(id),
+    quantity INT NOT NULL,
+    line_price NUMERIC(10,2) NOT NULL
+);
+
+-- DATA (bottoms)
+INSERT INTO bottoms (flavour, price) VALUES
+('Chocolate', 5),
+('Vanilla', 5),
+('Nutmeg', 5),
+('Pistacio', 6),
+('Almond', 7);
+
+-- DATA (toppings)
+INSERT INTO toppings (flavour, price) VALUES
+('Chocolate', 5),
+('Blueberry', 5),
+('Rasberry', 5),
+('Crispy', 6),
+('Strawberry', 6),
+('Rum/Raisin', 7),
+('Orange', 8),
+('Lemon', 8),
+('Blue cheese', 9);
