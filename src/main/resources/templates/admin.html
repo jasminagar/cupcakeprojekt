@@ -24,28 +24,6 @@
 
 <hr>
 
-<section>
-    <h2>Alle ordrer</h2>
-    <table border="1">
-        <thead>
-        <tr>
-            <th>Ordre ID</th>
-            <th>Bruger</th>
-            <th>Afhentningstid</th>
-            <th>Total pris</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="order : ${orders}">
-            <td th:text="${order.id}"></td>
-            <td th:text="${order.email}"></td>
-            <td th:text="${order.pickupTime}"></td>
-            <td th:text="${order.totalPrice}"></td>
-        </tr>
-        </tbody>
-    </table>
-</section>
-
 <hr>
 
 <section>
