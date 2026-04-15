@@ -33,6 +33,8 @@
             <button type="submit">Login</button>
         </form>
 
+        <a th:href="@{/registerUser}">Har du ikke en bruger? Opret dig her!</a>
+
         <p th:if="${message}" th:text="${message}" style="color:red;"></p>
     </section>
 </main>
