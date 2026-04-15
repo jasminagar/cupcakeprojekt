@@ -58,11 +58,11 @@ public class OrderService {
     public List<OrderLine> getAllOrderLines() {
         List<OrderLine> lines = new ArrayList<>();
         String sql = """
-        SELECT ol.order_id, b.name AS bottomName, t.name AS topName,
+        SELECT ol.order_id, b.flavour AS bottomName, t.flavour AS topName,
                ol.quantity, ol.line_price
         FROM order_lines ol
-        JOIN cupcake_bottoms b ON ol.bottom_id = b.id
-        JOIN cupcake_tops t ON ol.topping_id = t.id
+        JOIN bottoms b ON ol.bottom_id = b.id
+        JOIN toppings t ON ol.topping_id = t.id
     """;
 
         try (Connection con = database.getConnection();
