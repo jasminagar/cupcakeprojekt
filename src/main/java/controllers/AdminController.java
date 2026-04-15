@@ -19,6 +19,8 @@ public class AdminController {
         app.get("/admin", ctx -> showAdminPage(ctx, orderService));
 
         app.post("/admin/addBalance", ctx -> addBalance(ctx, userService));
+
+        app.post(("/admin/deleteOrder"), context -> deleteOrder(context, orderService,userService));
     }
 
 
@@ -62,5 +64,12 @@ public class AdminController {
         }
 
         ctx.redirect("/admin");
+    }
+
+    private static void deleteOrder(Context ctx, OrderService orderService, UserService userService){
+
+        int orderId = Integer.parseInt(ctx.formParam("orderId"));
+        orderService.deleteOrder(orderId);
+        ctx.redirect("/admin");;
     }
 }

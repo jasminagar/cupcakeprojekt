@@ -45,6 +45,14 @@
             <td th:text="${line.topFlavour}"></td>
             <td th:text="${line.quantity}"></td>
             <td th:text="${line.linePrice}"></td>
+
+            <td>
+                <form th:action="@{/admin/deleteOrder}" method="post">
+                    <input type="hidden" name="orderId" th:value="${line.orderId}" />
+                    <button type="submit">Slet ordre</button>
+                </form>
+            </td>
+
         </tr>
         </tbody>
     </table>
