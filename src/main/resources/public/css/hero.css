@@ -1,0 +1,9 @@
+.hero {
+    background: linear-gradient(to bottom, #340053, #4f1a69 55%, #b47fd4);
+    border: 10px solid rgba(211, 160, 223, 0.55);
+    border-top: none;
+}
+
+.hero-top {
+    padding: 22px 28px 8px;
+}
