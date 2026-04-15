@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<header>
+    <span th:if="${currentUser != null}">
+            Logget ind som: <span th:text="${currentUser.email}">email@example.com</span>
+        </span>
+    <a th:if="${currentUser != null}" th:href="@{/logout}">Log ud</a>
+    <a th:if="${currentUser == null}" th:href="@{/login}">Log ind</a></header>
 <head>
     <title>Admin Panel</title>
 </head>
 <body>
-
-<div th:replace="fragments/header :: header"></div>
-
-<h1>Admin Panel</h1>
 
 <section>
     <h2>Tilføj saldo til bruger</h2>
