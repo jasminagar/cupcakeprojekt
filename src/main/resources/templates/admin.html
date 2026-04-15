@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <header>
+    <link rel="stylesheet" href="/css/admin.css">
     <span th:if="${currentUser != null}">
             Logget ind som: <span th:text="${currentUser.email}">email@example.com</span>
         </span>
