@@ -178,4 +178,27 @@ public class OrderService {
 
         return null;
     }
+
+    public void deleteOrder(int orderId){
+        try(Connection connection = database.getConnection()){
+            String deleteLinesSql = "DELETE FROM order_lines WHERE order_id = ?";
+            String deleteOrderSql = "DELETE FROM orders WHERE id = ?";
+
+            connection.setAutoCommit(false);
+
+            PreparedStatement deleteLinePs = connection.prepareStatement(deleteLinesSql);
+            deleteLinePs.setInt(1, orderId);
+            deleteLinePs.executeUpdate();
+
+            PreparedStatement deleteOrderPs = connection.prepareStatement(deleteOrderSql);
+            deleteOrderPs.setInt(1, orderId);
+            deleteOrderPs.executeUpdate();
+
+            connection.commit();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
 }
