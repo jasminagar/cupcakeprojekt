@@ -37,13 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const cartButton = document.getElementById("cartButton");
     const cartWrapper = cartButton.closest(".cart-dropdown-wrapper");
 
-    cartButton.addEventListener("click", () => {
-        cartWrapper.classList.toggle("show");
+    /*cartButton.addEventListener("click", () => {
+        cartWrapper.classList.toggle("show");*/
     });
 
-    document.addEventListener("click", (e) => {
+    /*document.addEventListener("click", (e) => {
         if (!cartWrapper.contains(e.target)) {
             cartWrapper.classList.remove("show");
         }
     });
-});
+});*/

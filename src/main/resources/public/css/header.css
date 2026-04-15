@@ -4,11 +4,14 @@
     align-items: center;
     gap: 18px;
     flex-wrap: wrap;
+    justify-content: flex-end; /* 👈 gør alt højrestillet */
+    width: 100%;
 }
 
 .cart-dropdown-wrapper {
     position: relative;
 }
+
 
 .cart-count {
     margin-left: 6px;
@@ -25,6 +28,10 @@
     width: 280px;
     display: none;
     z-index: 60;
+}
+/*Åbner ved hover*/
+.cart-dropdown-wrapper:hover .cart-dropdown {
+    display: block;
 }
 
 .cart-item {
