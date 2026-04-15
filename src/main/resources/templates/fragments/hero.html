@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="hero">
+  <section id="vores-cupcakes" class="hero-extension page-shell">
+    <div class="hero-image-wrap">
+      <img class="hero-image" src="/images/cupcake-hero.png" alt="Der sprøjtes smørcreme på cupcakes" />
+    </div>
+
+    <div class="section-header">
+      <h2 class="section-title">Vores cupcakes</h2>
+      <img class="section-cupcake" src="/images/pink-cupcake.png" alt="Lyserød cupcake" />
+    </div>
+
+    <div class="intro-grid">
+      <div class="intro-card">
+        <p>
+          Gå på opdagelse i vores udvalg af lækre cupcakebunde og smørcremer og sammensæt din helt egen cupcake –
+          eller vælg blandt vores færdiglavede favoritter.
+        </p>
+      </div>
+
+      <div class="jump-links">
+        <a class="jump-card" href="#bunde">Klik her for at se vores udvalg af bunde</a>
+        <a class="jump-card" href="#smorcremer">Klik her for at se vores udvalg af smørcremer</a>
+        <a class="cta-link" th:href="@{/order}">Klik her for at bestille</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+</body>
+</html>

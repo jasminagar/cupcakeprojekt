@@ -14,31 +14,11 @@
 </head>
 <body>
 
-
 <div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/hero :: hero}"></div>
 
 <main>
-    <section id="vores-cupcakes" class="section-pink page-shell">
-        <div class="section-header">
-            <h2 class="section-title">Vores cupcakes</h2>
-            <img class="section-cupcake" src="/images/pink-cupcake.png" alt="Lyserød cupcake" />
-        </div>
-
-        <div class="intro-grid">
-            <div class="intro-card">
-                <p>
-                    Gå på opdagelse i vores udvalg af lækre cupcakebunde og smørcremer og sammensæt din helt egen cupcake –
-                    eller vælg blandt vores færdiglavede favoritter.
-                </p>
-            </div>
-
-            <div class="jump-links">
-                <a class="jump-card" href="#bunde">Klik her for at se vores udvalg af bunde</a>
-                <a class="jump-card" href="#smorcremer">Klik her for at se vores udvalg af smørcremer</a>
-                <a class="cta-link" href="/order">Klik her for at bestille</a>
-            </div>
-        </div>
-
+    <section class="section-pink page-shell">
 
         <section id="bunde" class="listing-block">
             <h3 class="listing-title">Her er vores brede udvalg af cupcakebunde</h3>
@@ -56,7 +36,6 @@
                 </div>
             </div>
         </section>
-
 
         <section id="smorcremer" class="listing-block">
             <h3 class="listing-title">Her er vores udvalg af smørcremer</h3>
@@ -88,7 +67,6 @@
             </div>
         </section>
 
-
         <section id="kontakt" class="listing-block">
             <h3 class="listing-title">Kontakt</h3>
             <div class="intro-card section-box contact-box">
@@ -99,6 +77,7 @@
                 </p>
             </div>
         </section>
+
     </section>
 </main>
 

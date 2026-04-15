@@ -4,7 +4,13 @@
     <title>Bestil Cupcakes</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Italianno&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/header.css">
 </head>
 <body>
 
@@ -18,7 +24,6 @@
         <p>Antal toppings: <span th:text="${#lists.size(toppings)}">0</span></p>
         <p>Din saldo: <span th:text="${currentUser.balance}">0</span> kr.</p>
 
-        <!-- Formular til at tilføje til session-kurv -->
         <form th:action="@{/cart/add}" method="post" th:object="${orderRequest}" class="login-form">
             <label for="bottom">Vælg bund</label>
             <select name="bottomId" id="bottom" required>
@@ -47,5 +52,6 @@
     </section>
 </main>
 
+<script src="/js/script.js"></script>
 </body>
 </html>
