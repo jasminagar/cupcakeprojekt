@@ -18,11 +18,13 @@ public class UserController {
     }
 
     private static void showLogin(Context ctx) {
+        ctx.attribute("activeTab", "login");
         ctx.render("login");
     }
 
     private static void showRegister(Context ctx) {
-        ctx.render("registerUser");
+        ctx.attribute("activeTab", "register");
+        ctx.render("login");
     }
 
     private static void logout(Context ctx) {
@@ -36,8 +38,11 @@ public class UserController {
         String username = ctx.formParam("username");
         String password = ctx.formParam("password");
 
-        if (username == null || password == null) {
-            ctx.status(400).result("Username and password required");
+        if (email == null || username == null || password == null ||
+                email.trim().isEmpty() || username.trim().isEmpty() || password.trim().isEmpty()) {
+            ctx.attribute("message", "Email, username og password skal udfyldes");
+            ctx.attribute("activeTab", "login");
+            ctx.render("login");
             return;
         }
 
@@ -46,44 +51,64 @@ public class UserController {
         if (user != null) {
             ctx.sessionAttribute("currentUser", user);
 
-//********Med i rapporten/sql med***********
             if ("admin".equals(user.getRole())) {
                 ctx.redirect("/admin");
             } else {
                 ctx.redirect("/order");
             }
         } else {
-            ctx.attribute("message", "Forkert mail eller kodeord");
+            ctx.attribute("message", "Forkert mail, username eller kodeord");
+            ctx.attribute("activeTab", "login");
             ctx.render("login");
         }
     }
 
     private static void register(Context ctx, UserService userService) {
 
+        String email = ctx.formParam("email");
         String username = ctx.formParam("username");
         String password = ctx.formParam("password");
-        double balance = Double.parseDouble(ctx.formParam("balance"));
+        String balanceParam = ctx.formParam("balance");
 
-        if (username == null || password == null) {
-            ctx.status(400).result("Username and password required");
+        if (email == null || username == null || password == null || balanceParam == null ||
+                email.trim().isEmpty() || username.trim().isEmpty() || password.trim().isEmpty() || balanceParam.trim().isEmpty()) {
+            ctx.attribute("message", "Alle felter skal udfyldes");
+            ctx.attribute("activeTab", "register");
+            ctx.render("login");
             return;
         }
 
+        double balance;
+        try {
+            balance = Double.parseDouble(balanceParam.trim());
+        } catch (NumberFormatException e) {
+            ctx.attribute("message", "Balance skal være et tal");
+            ctx.attribute("activeTab", "register");
+            ctx.render("login");
+            return;
+        }
+
+        String trimEmail = email.trim();
         String trimUsername = username.trim();
+        String trimPassword = password.trim();
 
         if (trimUsername.length() < 4) {
             ctx.attribute("message", "Username skal være mindst 4 tegn");
-            ctx.render("registerUser");
+            ctx.attribute("activeTab", "register");
+            ctx.render("login");
             return;
         }
 
-        boolean created = userService.createUser(trimUsername, trimUsername, password.trim(), balance);
+        boolean created = userService.createUser(trimEmail, trimUsername, trimPassword, balance);
 
         if (created) {
-            ctx.redirect("/login");
+            ctx.attribute("message", "Bruger oprettet! Du kan nu logge ind.");
+            ctx.attribute("activeTab", "login");
+            ctx.render("login");
         } else {
-            ctx.attribute("message", "Username findes allerede");
-            ctx.render("registerUser");
+            ctx.attribute("message", "Brugeren findes allerede");
+            ctx.attribute("activeTab", "register");
+            ctx.render("login");
         }
     }
 }
