@@ -1,0 +1,42 @@
+@startuml
+
+class SessionConfig
+class ThymeleafConfig
+
+class OrderController
+class UserController
+
+class CupcakeBottom
+class CupcakeTop
+class Order
+class User
+class Cupcake
+
+class Database
+
+class OrderService
+class UserService
+
+class Main
+
+CupcakeBottom --> Cupcake
+CupcakeTop --> Cupcake
+
+Cupcake --> Order
+
+Order --> OrderService
+
+OrderController --> OrderService
+OrderController --> UserService
+UserController --> UserService
+
+UserService --> Database
+OrderService --> Database
+
+SessionConfig --> Main
+ThymeleafConfig --> Main
+
+OrderController --> Main
+UserController --> Main
+
+@enduml
