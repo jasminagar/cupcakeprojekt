@@ -7,3 +7,60 @@
 .hero-top {
     padding: 22px 28px 8px;
 }
+
+/* =========================
+   HERO LAYOUT
+========================= */
+.page-shell {
+    width: 1280px;
+    margin: 0 auto;
+}
+
+.hero-extension {
+    border-left: 10px solid rgba(211, 160, 223, 0.55);
+    border-right: 10px solid rgba(211, 160, 223, 0.55);
+    border-bottom: 10px solid rgba(211, 160, 223, 0.55);
+    background: linear-gradient(to bottom, #4f1a69 0%, #b47fd4 100%);
+}
+
+
+/* =========================
+   HERO IMAGE
+========================= */
+.hero-image-wrap {
+    padding: 18px 18px 0;
+}
+
+.hero-image {
+    width: 100%;
+    aspect-ratio: 16/10;
+    object-fit: cover;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+
+/* =========================
+   HERO HEADER (titel + ikon)
+========================= */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-title {
+    font-family: "Italianno", cursive;
+    font-size: clamp(3.2rem, 6vw, 7rem);
+}
+
+.introitaliano p,
+.introitaliano a,
+.introitaliano{
+    font-family: "Italianno", cursive;
+}
+
+
+
+
+
+

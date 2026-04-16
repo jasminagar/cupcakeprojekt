@@ -1,416 +1,216 @@
-
-:root { /* global variabler (genbrug af farver og værdier) */
-    --white-soft: #f9f5fb; /* lys tekstfarve */
-    --shadow: 0 16px 36px rgba(0, 0, 0, 0.28); /* skygge effekt */
+/* =========================
+   VARIABLES
+========================= */
+:root {
+    --white-soft: #f9f5fb;
+    --shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+    --border-light: rgba(255,255,255,0.3);
+    --border-strong: rgba(255,255,255,0.9);
 }
 
-* { /* gælder alle elementer */
-    box-sizing: border-box; /* padding/border tæller med i størrelse */
-    margin: 0; /* fjerner standard margin */
-    padding: 0; /* fjerner standard padding */
+
+/* RESET */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
     font-family: "Cormorant Garamond", serif;
     background: linear-gradient(to bottom, #30004f 0%, #57206f 35%, #9f67a8 72%, #d3a0df 100%);
-    color: #f9f5fb;
+    color: var(--white-soft);
     min-height: 100vh;
 }
-a { /* links */
-    color: var(--white-soft); /* samme farve som tekst */
-    text-decoration: none; /* fjerner understregning */
+
+a {
+    color: var(--white-soft);
+    text-decoration: none;
 }
 
-img { /* billeder */
-    display: block; /* fjerner ekstra mellemrum */
-    max-width: 100%; /* gør billeder responsive */
-}
-
-.page-shell { /* hoved container */
-    width: 1280px; /* max bredde eller fuld bredde */
-    margin: 0 auto; /* centrerer siden */
-    position: relative; /* mulighed for positionering */
-}
-
-.site-nav-left,
-.site-nav-right { /* venstre + højre menu */
-    display: flex; /* flexbox */
-    align-items: center; /* centrerer lodret */
-    gap: 18px; /* mellemrum */
-    flex-wrap: wrap; /* gør den responsiv */
-}
-
-.top-actions { /* login + kurv */
-    display: flex; /* flex layout */
-    justify-content: flex-end; /* højre side */
-    align-items: center; /* centrer */
-    gap: 18px; /* afstand */
-    margin-bottom: 4px; /* bund margin */
+img {
+    display: block;
+    max-width: 100%;
 }
 
 
-.cart-button svg { /* kurv ikon */
-    width: 34px; /* bredde */
-    height: 34px; /* højde */
-    stroke: currentColor; /* bruger tekstfarve */
-    fill: none; /* ingen fyld */
-    stroke-width: 2.2; /* linjetykkelse */
+/* GENERELT LAYOUT*/
+.page-shell {
+    width: 1280px;
+    margin: 0 auto;
 }
 
-.brand-row { /* logo område */
-    display: grid; /* grid layout */
-    grid-template-columns: 120px 1fr 120px; /* 3 kolonner */
-    align-items: center; /* centrer lodret */
-    gap: 18px; /* afstand */
-}
-
-.brand-cupcake { /* cupcake billede */
-    width: min(10vw, 112px); /* responsiv størrelse */
-    min-width: 70px; /* minimum størrelse */
-    justify-self: center; /* centrer i grid */
-}
-/*Samme klasser*/
-.brand-title,
-.section-title,
-.listing-title { /* alle overskrifter */
-    font-family: "Italianno", cursive; /* fancy font */
-    font-weight: 400; /* normal vægt */
-    line-height: 0.9; /* tæt linjeafstand */
-}
-.nav-bar {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+.flex {
+    display: flex;
     align-items: center;
-    border-top: 2px solid rgba(255, 255, 255, 0.9);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.15);
-    min-height: 112px;
+    gap: 18px;
+    flex-wrap: wrap;
 }
 
-.nav-link {
+.grid {
+    display: grid;
+}
+
+/* GENERELLE SECTIONS*/
+.section {
+    padding-top: 82px;
+}
+
+.section-pink {
+    padding: 32px 28px 56px;
+    background: linear-gradient(to bottom, #7b0066 0%, #8f1f77 35%, #b274b4 100%);
+}
+
+.section-title {
+    font-size: clamp(3.2rem, 6vw, 7rem);
+}
+
+.infotitle {
     text-align: center;
-    font-size: clamp(1.8rem, 2.4vw, 3rem);
-    padding: 28px 16px;
-    position: relative;
+    font-size: clamp(2.6rem, 5vw, 6.2rem);
+    margin-bottom: 48px;
+    font-family: "Italianno", cursive;
 }
 
-/* skillelinje mellem links */
-.nav-link:not(:first-child)::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 2px;
-    height: 58px;
-    background: rgba(255, 255, 255, 0.85);
+.herocupcakeimg {
+    width: min(10vw, 90px);
+    min-width: 60px;
 }
 
-.hero-image-wrap { /* billede wrapper */
-    padding: 18px 18px 0; /* spacing */
+.introitalioano p,
+.introitalioano a {
+    font-family: "Italianno", cursive;
 }
 
-.hero-image { /* hero billede */
-    width: 100%; /* fuld bredde */
-    aspect-ratio: 16 / 10; /* forhold */
-    object-fit: cover; /* fylder container */
-    border: 1px solid rgba(255, 255, 255, 0.35); /* kant */
+
+/* KONTAKT/OM OS CARDS*/
+.infotekst {
+    border: 2px solid rgba(0,0,0,0.35);
+    padding: 16px 18px;
+    background: rgba(116,17,104,0.14);
+    max-width: 700px;
+    margin: 0 auto;
 }
 
-.section-pink { /* pink sektion */
-    padding: 32px 28px 56px; /* spacing */
-    background: linear-gradient(to bottom, #7b0066 0%, #8f1f77 35%, #b274b4 100%); /* gradient */
+.card p {
+    font-size: clamp(2rem, 3vw, 4.2rem);
+    line-height: 1.18;
 }
 
-.section-title { /* titel */
-    font-size: clamp(3.2rem, 6vw, 7rem); /* responsiv */
+.cardcenter {
+    margin: 0 auto;
+    text-align: center;
 }
 
-.section-cupcake { /* lille ikon */
-    width: min(10vw, 90px); /* responsiv */
-    min-width: 60px; /* minimum */
+
+/* INTRO OG JUMPLINKS*/
+.intro-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 72px;
+    align-items: start;
+    padding-top: 34px;
 }
 
-.intro-grid { /* intro layout */
-    display: grid; /* grid */
-    grid-template-columns: 1.1fr 1fr; /* 2 kolonner */
-    gap: 72px; /* afstand */
-    align-items: start; /* top alignment */
-    padding-top: 34px; /* top spacing */
+.intro-card p {
+    font-size: clamp(2rem, 3vw, 4.2rem);
+    line-height: 1.18;
 }
 
-.intro-card { /* kort */
-    border: 2px solid rgba(0, 0, 0, 0.35); /* kant */
-    padding: 16px 18px; /* spacing */
-    background: rgba(116, 17, 104, 0.14); /* gennemsigtig baggrund */
-}
-
-.intro-card p { /* tekst */
-    font-size: clamp(2rem, 3vw, 4.2rem); /* responsiv */
-    line-height: 1.18; /* linjeafstand */
-}
-
-.jump-links { /* links */
-    display: grid; /* grid */
-    gap: 56px; /* afstand */
-    padding-top: 12px; /* top spacing */
+.jump-links {
+    display: grid;
+    gap: 56px;
+    padding-top: 12px;
 }
 
 .jump-card,
-.cta-link { /* klikbare kort */
-    display: block; /* blok */
-    font-size: clamp(2rem, 2.8vw, 4rem); /* responsiv */
-    line-height: 1.18; /* linjeafstand */
+.cta-link {
+    display: block;
+    font-size: clamp(2rem, 2.8vw, 4rem);
+    line-height: 1.18;
 }
 
-.listing-block { /* menu sektion */
-    padding-top: 82px; /* top spacing */
+/* LISTE AF SMAGER PÅ FORSIDE */
+.flavourlist {
+    padding-top: 82px;
 }
 
-.listing-title { /* titel */
-    text-align: center; /* centrer */
-    font-size: clamp(2.6rem, 5vw, 6.2rem); /* responsiv */
-    margin-bottom: 48px; /* afstand */
+.listtitle {
+    text-align: center;
+    font-size: clamp(2.6rem, 5vw, 6.2rem);
+    margin-bottom: 48px;
 }
 
-.listing-grid { /* grid */
-    display: grid; /* grid */
-    grid-template-columns: repeat(2, 1fr); /* 2 kolonner */
-    gap: 42px 90px; /* spacing */
-    max-width: 1120px; /* max bredde */
-    margin: 0 auto; /* centrer */
+.listgrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 42px 90px;
+    max-width: 1120px;
+    margin: 0 auto;
 }
 
-.listing-column { /* kolonne */
-    display: grid; /* grid */
-    gap: 34px; /* mellemrum */
+.listcolumn {
+    display: grid;
+    gap: 34px;
 }
 
-.menu-item { /* produkt */
-    display: grid; /* grid */
-    grid-template-columns: 1fr auto auto; /* tekst + pris + billede */
-    align-items: center; /* centrer */
-    gap: 24px; /* afstand */
+.menu-item {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 24px;
+    font-size: clamp(2rem, 2.7vw, 3.8rem);
 }
 
-.menu-item span { /* tekst */
-    font-size: clamp(2rem, 2.7vw, 3.8rem); /* responsiv */
+.menu-item .price {
+    min-width: 90px;
+    text-align: right;
 }
 
-.menu-item .price { /* pris */
-    min-width: 90px; /* bredde */
-    text-align: right; /* højre */
+.menu-item img {
+    width: clamp(54px, 7vw, 94px);
 }
 
-.menu-item img { /* billede */
-    width: clamp(54px, 7vw, 94px); /* responsiv */
+
+/* BUTTONS I LOGIN FORM*/
+.login-form button {
+    display: inline-flex;
+    place-content: center;
+    min-height: 48px;
+    background: linear-gradient(135deg, #7d2183, #c189d6);
+    color: white;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
 }
 
-/* CART */
-.cart-overlay { /* baggrund overlay */
-    position: fixed; /* fast */
-    inset: 0; /* hele skærmen */
-    background: rgba(0, 0, 0, 0.34); /* mørk overlay */
-    opacity: 0; /* skjult */
-    visibility: hidden; /* ikke synlig */
-    transition: opacity 0.25s ease, visibility 0.25s ease; /* animation */
-    z-index: 70; /* over indhold */
+/*FORM FOR LOGIN OG ORDER*/
+.form-page {
+    display: flex;
+    justify-content: center;
+    padding: 48px 16px;
 }
 
-.cart-drawer { /* kurv */
-    position: fixed; /* fast */
-    top: 0; /* top */
-    right: 0; /* højre */
-    width: min(420px, 92vw); /* bredde */
-    height: 100vh; /* fuld højde */
-    color: #111; /* tekst */
-    box-shadow: var(--shadow); /* skygge */
-    transform: translateX(100%); /* skjult */
-    transition: transform 0.3s ease; /* animation */
-    z-index: 80; /* over overlay */
-    display: flex; /* flex */
-    flex-direction: column; /* lodret */
-    padding: 26px 22px; /* spacing */
+.form-card {
+    width: min(100%, 640px);
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: var(--shadow);
 }
 
-body.cart-open .cart-overlay { /* når kurv åbnes */
-    opacity: 1; /* synlig */
-    visibility: visible; /* vis */
-}
-
-body.cart-open .cart-drawer { /* når kurv åbnes */
-    transform: translateX(0); /* vises */
-}
-
-/* CART CONTENT */
-.cart-head { /* top */
-    display: flex; /* flex */
-    justify-content: space-between; /* mellemrum */
-    align-items: center; /* centrer */
-    gap: 16px; /* afstand */
-    margin-bottom: 28px; /* bund afstand */
-}
-
-.cart-head h2 { /* titel */
-    font-size: 2rem; /* størrelse */
-    color: #121212; /* farve */
-}
-
-.close-cart { /* luk knap */
-    border: none; /* ingen kant */
-    background: transparent; /* ingen baggrund */
-    font-size: 2rem; /* størrelse */
-    cursor: pointer; /* klik */
-    color: #222; /* farve */
-}
-
-.cart-items { /* items */
-    display: grid; /* grid */
-    gap: 14px; /* afstand */
-    margin-bottom: 22px; /* bund */
-}
-
-.cart-item { /* item */
-    background: white; /* hvid */
-    border-radius: 12px; /* runde hjørner */
-    padding: 14px; /* spacing */
-    display: grid; /* grid */
-    gap: 4px; /* afstand */
-}
-
-.cart-item strong { /* titel */
-    font-size: 1.35rem; /* størrelse */
-}
-
-.cart-footer { /* bund */
-    margin-top: auto; /* skubber ned */
-    display: grid; /* grid */
-    gap: 16px; /* afstand */
-}
-
-.cart-total { /* total */
-    display: flex; /* flex */
-    justify-content: space-between; /* mellemrum */
-    font-size: 1.5rem; /* størrelse */
-    font-weight: 600; /* fed */
-}
-
-.cart-checkout,
-.login-form button { /* knap */
-    display: inline-flex; /* flex */
-    justify-content: center; /* centrer */
-    align-items: center; /* centrer */
-    min-height: 48px; /* højde */
-    background: linear-gradient(135deg, #7d2183, #c189d6); /* gradient */
-    color: white; /* tekst */
-    border-radius: 14px; /* runde hjørner */
-    font-size: 1rem; /* tekst */
-    font-weight: 600; /* fed */
-    border: none; /* ingen kant */
-    cursor: pointer; /* klik */
-}
-
-/* FORM */
-.form-page { /* side */
-    display: flex; /* flex */
-    justify-content: center; /* centrer */
-    padding: 48px 16px; /* spacing */
-}
-
-.form-card { /* kort */
-    width: min(100%, 640px); /* max bredde */
-    background: rgba(255, 255, 255, 0.12); /* gennemsigtig */
-    border: 1px solid rgba(255, 255, 255, 0.22); /* kant */
-    border-radius: 18px; /* runde hjørner */
-    padding: 28px; /* spacing */
-    box-shadow: var(--shadow); /* skygge */
-}
-
-.form-card h1 { /* overskrift */
-    margin-bottom: 22px; /* afstand */
-    font-size: 2.4rem; /* størrelse */
-}
-
-.login-form { /* form */
-    display: grid; /* grid */
-    gap: 12px; /* afstand */
-}
-
-.login-form label { /* label */
-    font-size: 1.15rem; /* tekst */
+.login-form {
+    display: grid;
+    gap: 12px;
 }
 
 .login-form input,
-.login-form select { /* input felter */
-    min-height: 46px; /* højde */
-    border-radius: 10px; /* runde hjørner */
-    border: none; /* ingen kant */
-    padding: 0 14px; /* spacing */
-    font-size: 1rem; /* tekst */
-}
-
-.order-card p { /* tekst */
-    margin-bottom: 10px; /* afstand */
-    font-size: 1.1rem; /* størrelse */
-}
-
-.section-box { /* centrer box */
-    margin: 0 auto; /* midt */
-}
-
-.narrow-box { /* small box */
-    max-width: 900px; /* bredde */
-}
-
-.contact-box { /* kontakt box */
-    max-width: 700px; /* bredde */
-    text-align: center; /* centrer tekst */
-}
-
-/* RESPONSIVE */
-@media (max-width: 1024px) { /* tablet */
-    .intro-grid,
-    .listing-grid {
-        grid-template-columns: 1fr; /* 1 kolonne */
-    }
-
-    .brand-row {
-        grid-template-columns: 90px 1fr 90px; /* mindre */
-    }
-}
-
-@media (max-width: 700px) { /* mobil */
-    .site-nav {
-        flex-direction: column; /* lodret */
-        align-items: flex-start; /* venstre */
-    }
-
-    .brand-row {
-        grid-template-columns: 1fr; /* 1 kolonne */
-    }
-
-    .brand-cupcake:last-child {
-        display: none; /* skjul */
-    }
-
-    .nav-bar {
-        grid-template-columns: 1fr; /* mobil menu */
-        min-height: auto; /* auto højde */
-    }
-
-    .nav-link + .nav-link::before {
-        display: none; /* fjern linje */
-    }
-
-    .nav-link + .nav-link {
-        border-top: 1px solid rgba(255, 255, 255, 0.28); /* linje */
-    }
-
-    .menu-item {
-        grid-template-columns: 1fr auto 52px; /* mobil layout */
-        gap: 14px; /* mindre gap */
-    }
-
-    .form-card {
-        padding: 20px; /* mindre padding */
-    }
+.login-form select {
+    min-height: 46px;
+    border-radius: 10px;
+    border: none;
+    padding: 0 14px;
 }

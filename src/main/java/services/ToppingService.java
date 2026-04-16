@@ -20,7 +20,7 @@ public class ToppingService {
         List<CupcakeTop> allTops = new ArrayList<>();
 
         try (Connection con = database.getConnection()) {
-            String sql = "select * from bottoms";
+            String sql = "select * from toppings";
 
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
