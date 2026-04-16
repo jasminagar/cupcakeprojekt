@@ -32,18 +32,3 @@ document.addEventListener('keydown', function (event) {
         closeCart();
     }
 });
-
-document.addEventListener("DOMContentLoaded", () => {
-    const cartButton = document.getElementById("cartButton");
-    const cartWrapper = cartButton.closest(".cart-dropdown-wrapper");
-
-    /*cartButton.addEventListener("click", () => {
-        cartWrapper.classList.toggle("show");*/
-    });
-
-    /*document.addEventListener("click", (e) => {
-        if (!cartWrapper.contains(e.target)) {
-            cartWrapper.classList.remove("show");
-        }
-    });
-});*/

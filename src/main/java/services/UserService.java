@@ -84,31 +84,6 @@ public class UserService {
         return null;
     }
 
-    public List<User> getAllUsers() {
-        List<User> allUsers = new ArrayList<>();
-
-        try (Connection connection = database.getConnection()) {
-            String sql = "select * from users";
-
-            PreparedStatement ps = connection.prepareStatement(sql);
-
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                allUsers.add(new User(
-                        rs.getString("email"),
-                        rs.getString("name"),
-                        rs.getString("password"),
-                        rs.getDouble("balance"),
-                        rs.getString("role")));
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return allUsers;
-    }
-
     public User login(String email, String username, String password) {
         String sql = "SELECT id, email, name, password, balance, role FROM users WHERE email = ? and name = ? AND password = ?";
 

@@ -1,0 +1,43 @@
+
+@media (max-width: 1024px) {
+    .intro-grid,
+    .listing-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .brand-row {
+        grid-template-columns: 90px 1fr 90px;
+    }
+}
+
+@media (max-width: 700px) {
+    .brand-row {
+        grid-template-columns: 1fr;
+    }
+
+    .brand-cupcake:last-child {
+        display: none;
+    }
+
+    .nav-bar {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .nav-link{
+        display: none;
+    }
+
+    .nav-link{
+        border-top: 1px solid rgba(255,255,255,0.28);
+    }
+
+    .menu-item {
+        grid-template-columns: 1fr auto 52px;
+        gap: 14px;
+    }
+
+    .form-card {
+        padding: 20px;
+    }
+}
