@@ -145,6 +145,17 @@ public class OrderController {
             return;
         }
 
+        double totalPrice = 0;
+         for (CartItem item : cart){
+             totalPrice += item.getTotalPrice();
+         }
+
+         if(sessionUser.getBalance() < totalPrice){
+             ctx.attribute("message", "Beløb for stort");
+             ctx.redirect("/order");
+             return;
+         }
+
         for (CartItem item : cart) {
             OrderRequest request = new OrderRequest();
             request.setBottomId(item.getBottomId());
@@ -154,6 +165,8 @@ public class OrderController {
             request.setPickupTime(LocalDateTime.now().plusDays(1));
 
             orderService.createOrder(request);
+
+
         }
 
         ctx.sessionAttribute("cart", new ArrayList<CartItem>());

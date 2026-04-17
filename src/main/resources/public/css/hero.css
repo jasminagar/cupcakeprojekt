@@ -8,9 +8,7 @@
     padding: 22px 28px 8px;
 }
 
-/* =========================
-   HERO LAYOUT
-========================= */
+/* HERO  GENERELT LAYOUT*/
 .page-shell {
     width: 1280px;
     margin: 0 auto;
@@ -24,9 +22,7 @@
 }
 
 
-/* =========================
-   HERO IMAGE
-========================= */
+/* HERO IMG */
 .hero-image-wrap {
     padding: 18px 18px 0;
 }
@@ -39,7 +35,7 @@
 }
 
 
-/* HERO HEADER (titel + ikon)*/
+/* HERO HEADER titel og ikon*/
 .sectionheader {
     display: flex;
     justify-content: space-between;

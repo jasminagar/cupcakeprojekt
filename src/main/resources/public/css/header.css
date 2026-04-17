@@ -4,7 +4,7 @@
     align-items: center;
     gap: 18px;
     flex-wrap: wrap;
-    justify-content: flex-end; /* 👈 gør alt højrestillet */
+    justify-content: flex-end;
     width: 100%;
 }
 
