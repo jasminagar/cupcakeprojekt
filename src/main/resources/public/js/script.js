@@ -32,3 +32,29 @@ document.addEventListener('keydown', function (event) {
         closeCart();
     }
 });
+
+function showForm(type) {
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+    const loginTab = document.getElementById("loginTab");
+    const registerTab = document.getElementById("registerTab");
+
+    if (type === "register") {
+        registerForm.classList.add("active");
+        loginForm.classList.remove("active");
+        registerTab.classList.add("active");
+        loginTab.classList.remove("active");
+    } else {
+        loginForm.classList.add("active");
+        registerForm.classList.remove("active");
+        loginTab.classList.add("active");
+        registerTab.classList.remove("active");
+    }
+}
+
+const activeTab = "[[${activeTab}]]";
+if (activeTab === "register") {
+    showForm("register");
+} else {
+    showForm("login");
+}
