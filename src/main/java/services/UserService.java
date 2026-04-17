@@ -15,6 +15,21 @@ public class UserService {
         this.database = database;
     }
 
+    public boolean emailExists(String email){
+        try(Connection connection = database.getConnection()){
+            String sql = "select 1 from users where email = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, email);
+
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean addBalance(int userId, double amount) {
         String sql = "update users set balance = balance + ? where id = ?";
 
@@ -34,7 +49,18 @@ public class UserService {
     }
 
     public boolean createUser(String email, String name, String password, double balance) {
+
         try (Connection connection = database.getConnection()) {
+            String checkSql = "select 1 from users where email = ? or name = ?";
+            PreparedStatement cehckPs = connection.prepareStatement(checkSql);
+            cehckPs.setString(1, email);
+            cehckPs.setString(2, name);
+
+            ResultSet rs = cehckPs.executeQuery();
+
+            if (rs.next()) {
+                return false;
+            }
             String sql = "insert into users (email, name, password, balance) values (?, ?,?, ?)";
 
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -45,10 +71,12 @@ public class UserService {
 
             ps.executeUpdate();
 
+            return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
+        return false;
     }
 
     public User getUserById(int id) {
