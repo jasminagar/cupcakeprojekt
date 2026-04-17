@@ -78,6 +78,13 @@ public class UserController {
             return;
         }
 
+        if(userService.emailExists(email)){
+            ctx.attribute("message", "Email findes allerede. Prøv igen");
+            ctx.attribute("activeTab", "register");
+            ctx.render("login");
+            return;
+        }
+
         double balance;
         try {
             balance = Double.parseDouble(balanceParam.trim());
