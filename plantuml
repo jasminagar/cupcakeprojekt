@@ -1,42 +1,41 @@
 @startuml
 
-class SessionConfig
-class ThymeleafConfig
+' === DOMÆNEOBJEKTER ===
+class User {
+  email
+}
 
-class OrderController
-class UserController
+class Order {
+  date
+  totalPrice
+}
 
-class CupcakeBottom
-class CupcakeTop
-class Order
-class User
-class Cupcake
+class OrderLine {
+  quantity
+}
 
-class Database
+class Cupcake {
+}
 
-class OrderService
-class UserService
+class Bottom {
+  name
+  price
+}
 
-class Main
+class Topping {
+  name
+  price
+}
 
-CupcakeBottom --> Cupcake
-CupcakeTop --> Cupcake
+' === RELATIONER (som i dit eksempel) ===
 
-Cupcake --> Order
+User "1" -- "0..*" Order : places
 
-Order --> OrderService
+Order "1" -- "1..*" OrderLine : contains
 
-OrderController --> OrderService
-OrderController --> UserService
-UserController --> UserService
+OrderLine "1" -- "1" Cupcake : item-of
 
-UserService --> Database
-OrderService --> Database
-
-SessionConfig --> Main
-ThymeleafConfig --> Main
-
-OrderController --> Main
-UserController --> Main
+Cupcake "1" -- "1" Bottom : made-with
+Cupcake "1" -- "1" Topping : made-with
 
 @enduml

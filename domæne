@@ -1,0 +1,56 @@
+@startuml
+
+' === KLASSER ===
+class User {
+  - userId : int
+  - email : String
+  - password : String
+  - balance : double
+  - role : String
+}
+
+class Order {
+  - orderId : int
+  - orderDate : LocalDate
+  - totalPrice : double
+  - status : String
+}
+
+class OrderLine {
+  - orderLineId : int
+  - quantity : int
+  - linePrice : double
+}
+
+class Cupcake {
+  - cupcakeId : int
+}
+
+class Bottom {
+  - bottomId : int
+  - name : String
+  - price : double
+}
+
+class Topping {
+  - toppingId : int
+  - name : String
+  - price : double
+}
+
+class Cart {
+  - cartId : int
+}
+
+
+User "1" --> "0..*" Order : places
+Order "1" --> "1..*" OrderLine : contains
+
+OrderLine "1" --> "1" Cupcake
+Cupcake "1" --> "1" Bottom
+Cupcake "1" --> "1" Topping
+
+User "1" --> "1" Cart
+Cart "1" --> "0..*" OrderLine : holds
+
+@enduml
