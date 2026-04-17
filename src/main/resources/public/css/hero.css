@@ -39,23 +39,19 @@
 }
 
 
-/* =========================
-   HERO HEADER (titel + ikon)
-========================= */
+/* HERO HEADER (titel + ikon)*/
 .section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.section-title {
+.introitalioano{
     font-family: "Italianno", cursive;
     font-size: clamp(3.2rem, 6vw, 7rem);
 }
 
-.introitaliano p,
-.introitaliano a,
-.introitaliano{
+.sectionheader{
     font-family: "Italianno", cursive;
 }
 
