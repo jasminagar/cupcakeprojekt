@@ -23,46 +23,14 @@ public class OrderService {
         this.toppingService = toppingService;
     }
 
-    public List<Order> getOrdersByUserId(int userId) {
-        List<Order> orders = new ArrayList<>();
-        String sql = """
-        SELECT o.id, o.user_id, u.email, o.pickup_time, o.total_price
-        FROM orders o
-        JOIN users u ON o.user_id = u.id
-        WHERE o.user_id = ?
-        ORDER BY o.pickup_time DESC
-    """;
-
-        try (Connection con = database.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, userId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Order order = new Order();
-                    order.setId(rs.getInt("id"));
-                    order.setUserId(rs.getInt("user_id"));
-                    order.setEmail(rs.getString("email"));
-                    order.setPickupTime(rs.getTimestamp("pickup_time").toLocalDateTime());
-                    order.setTotalPrice(rs.getDouble("total_price"));
-                    orders.add(order);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return orders;
-    }
-
     public List<OrderLine> getAllOrderLines() {
         List<OrderLine> lines = new ArrayList<>();
         String sql = """
-        SELECT ol.order_id, b.flavour AS bottomName, t.flavour AS topName,
+        select ol.order_id, b.flavour as bottomName, t.flavour as topName,
                ol.quantity, ol.line_price
-        FROM order_lines ol
-        JOIN bottoms b ON ol.bottom_id = b.id
-        JOIN toppings t ON ol.topping_id = t.id
+        from order_lines ol
+        join bottoms b on ol.bottom_id = b.id
+        join toppings t on ol.topping_id = t.id
     """;
 
         try (Connection con = database.getConnection();
@@ -88,10 +56,10 @@ public class OrderService {
 
     public List<Order> getAllOrders() {
         List<Order> orders = new ArrayList<>();
-        String sql = "SELECT o.id, o.user_id, u.email, o.pickup_time, o.total_price " +
-                "FROM orders o " +
-                "JOIN users u ON o.user_id = u.id " +
-                "ORDER BY o.pickup_time DESC";
+        String sql = "select o.id, o.user_id, u.email, o.pickup_time, o.total_price " +
+                "from orders o " +
+                "join users u on o.user_id = u.id " +
+                "order by o.pickup_time desc";
 
         try (Connection con = database.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -181,8 +149,8 @@ public class OrderService {
 
     public void deleteOrder(int orderId){
         try(Connection connection = database.getConnection()){
-            String deleteLinesSql = "DELETE FROM order_lines WHERE order_id = ?";
-            String deleteOrderSql = "DELETE FROM orders WHERE id = ?";
+            String deleteLinesSql = "delete from order_lines where order_id = ?";
+            String deleteOrderSql = "delete from orders where id = ?";
 
             connection.setAutoCommit(false);
 

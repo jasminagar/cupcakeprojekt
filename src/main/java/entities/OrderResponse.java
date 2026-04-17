@@ -14,15 +14,4 @@ public class OrderResponse {
         this.pickupTime = pickupTime;
     }
 
-    public int getOrderId() {
-        return orderId;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public LocalDateTime getPickupTime() {
-        return pickupTime;
-    }
 }

@@ -24,21 +24,20 @@ public class OrderLine {
         this.linePrice = linePrice;
     }
 
-    public int getId() { return id; }
-    public int getOrderId() { return orderId; }
-    public int getBottomId() { return bottomId; }
-    public int getToppingId() { return toppingId; }
-    public String getBottomFlavour() { return bottomFlavour; }
-    public String getTopFlavour() { return topFlavour; }
-    public int getQuantity() { return quantity; }
-    public double getLinePrice() { return linePrice; }
-
-    public void setId(int id) { this.id = id; }
-    public void setOrderId(int orderId) { this.orderId = orderId; }
-    public void setBottomId(int bottomId) { this.bottomId = bottomId; }
-    public void setToppingId(int toppingId) { this.toppingId = toppingId; }
-    public void setBottomFlavour(String bottomFlavour) { this.bottomFlavour = bottomFlavour; }
-    public void setTopFlavour(String topFlavour) { this.topFlavour = topFlavour; }
-    public void setQuantity(int quantity) { this.quantity = quantity; }
-    public void setLinePrice(double linePrice) { this.linePrice = linePrice; }
+    public int getId() {
+        return id; }
+    public int getQuantity() {
+        return quantity; }
+    public void setId(int id) {
+        this.id = id; }
+    public void setOrderId(int orderId) {
+        this.orderId = orderId; }
+    public void setBottomFlavour(String bottomFlavour) {
+        this.bottomFlavour = bottomFlavour; }
+    public void setTopFlavour(String topFlavour) {
+        this.topFlavour = topFlavour; }
+    public void setQuantity(int quantity) {
+        this.quantity = quantity; }
+    public void setLinePrice(double linePrice) {
+        this.linePrice = linePrice; }
 }

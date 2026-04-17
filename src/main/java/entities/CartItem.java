@@ -18,6 +18,14 @@ public class CartItem {
         this.bottomId = bottomId;
     }
 
+    public String getBottomName() {
+        return bottomName;
+    }
+
+    public String getToppingName() {
+        return toppingName;
+    }
+
     public int getToppingId() {
         return toppingId;
     }
@@ -26,16 +34,8 @@ public class CartItem {
         this.toppingId = toppingId;
     }
 
-    public String getBottomName() {
-        return bottomName;
-    }
-
     public void setBottomName(String bottomName) {
         this.bottomName = bottomName;
-    }
-
-    public String getToppingName() {
-        return toppingName;
     }
 
     public void setToppingName(String toppingName) {

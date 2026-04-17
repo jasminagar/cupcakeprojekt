@@ -10,7 +10,8 @@ public class OrderRequest {
     private int quantity;
     private LocalDateTime pickupTime;
 
-    public OrderRequest() {}
+    public OrderRequest() {
+    }
 
     public OrderRequest(int userId, int bottomId, int toppingId, int quantity, LocalDateTime pickupTime) {
         this.userId = userId;

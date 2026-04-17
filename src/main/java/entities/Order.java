@@ -33,44 +33,16 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-    public void addOrderLine(OrderLine orderLine){
-        orderLines.add(orderLine);
-    }
-
-    public double getTotalPrice(){
-        double total = 0;
-        for(OrderLine line : orderLines){
-            total += line.getLinePrice();
-        }
-        return total;
-    }
-
     public int getId() {
         return id;
-    }
-
-    public List<OrderLine> getOrderLines() {
-        return orderLines;
-    }
-
-    public LocalDateTime getPickupTime() {
-        return pickupTime;
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setOrderLines(List<OrderLine> orderLines) {
-        this.orderLines = orderLines;
-    }
-
     public void setPickupTime(LocalDateTime pickupTime) {
         this.pickupTime = pickupTime;
-    }
-
-    public int getUserId() {
-        return userId;
     }
 
     public void setUserId(int userId) {

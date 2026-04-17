@@ -7,8 +7,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserService {
     private Database database;
@@ -18,7 +16,7 @@ public class UserService {
     }
 
     public boolean addBalance(int userId, double amount) {
-        String sql = "UPDATE users SET balance = balance + ? WHERE id = ?";
+        String sql = "update users set balance = balance + ? where id = ?";
 
         try (Connection con = database.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -54,7 +52,7 @@ public class UserService {
     }
 
     public User getUserById(int id) {
-        String sql = "SELECT id, email, name, password, balance, role FROM users WHERE id = ?";
+        String sql = "select id, email, name, password, balance, role from users where id = ?";
 
         try (Connection con = database.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -85,7 +83,7 @@ public class UserService {
     }
 
     public User login(String email, String username, String password) {
-        String sql = "SELECT id, email, name, password, balance, role FROM users WHERE email = ? and name = ? AND password = ?";
+        String sql = "select id, email, name, password, balance, role from users where email = ? and name = ? and password = ?";
 
         try (Connection con = database.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -112,50 +110,6 @@ public class UserService {
             e.printStackTrace();
         }
 
-        return null; // login fejlede
+        return null;
     }
-
-    public User getUserByUsername(String username) {
-        User user = null;
-        try (Connection connection = database.getConnection()) {
-            String sql = "SELECT * FROM users WHERE name = ?";
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                user = new User();
-                user.setId(rs.getInt("id"));
-                user.setName(rs.getString("name"));
-                user.setPassword(rs.getString("password"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return user;
-    }
-
-    public boolean loginIn(String name, String password) {
-        try (Connection connection = database.getConnection()) {
-            String sql = "select * from users where name = ? and password = ?";
-
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, name);
-            ps.setString(2, password);
-
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                System.out.println("USER FOUND");
-            } else {
-                System.out.println("USER NOT FOUND");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return true;
-    }
-
 }

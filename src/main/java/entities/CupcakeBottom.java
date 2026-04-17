@@ -11,11 +11,6 @@ public class CupcakeBottom {
         this.price = price;
     }
 
-    public CupcakeBottom(String flavour, double price) {
-        this.flavour = flavour;
-        this.price = price;
-    }
-
     public int getId() {
         return id;
     }
@@ -28,15 +23,7 @@ public class CupcakeBottom {
         return flavour;
     }
 
-    public void setFlavour(String flavour) {
-        this.flavour = flavour;
-    }
-
     public double getPrice() {
         return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 }

@@ -42,10 +42,6 @@ private String role;
         this.name = name;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -62,7 +58,4 @@ private String role;
         return role;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
 }
