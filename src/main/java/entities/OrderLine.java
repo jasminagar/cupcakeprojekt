@@ -40,4 +40,36 @@ public class OrderLine {
         this.quantity = quantity; }
     public void setLinePrice(double linePrice) {
         this.linePrice = linePrice; }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public int getBottomId() {
+        return bottomId;
+    }
+
+    public void setBottomId(int bottomId) {
+        this.bottomId = bottomId;
+    }
+
+    public int getToppingId() {
+        return toppingId;
+    }
+
+    public void setToppingId(int toppingId) {
+        this.toppingId = toppingId;
+    }
+
+    public String getBottomFlavour() {
+        return bottomFlavour;
+    }
+
+    public String getTopFlavour() {
+        return topFlavour;
+    }
+
+    public double getLinePrice() {
+        return linePrice;
+    }
 }
