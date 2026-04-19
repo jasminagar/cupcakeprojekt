@@ -16,7 +16,7 @@ public class AdminController {
                                  UserService userService,
                                  OrderService orderService) {
 
-        app.get("/admin", ctx -> showAdminPage(ctx, orderService));
+        app.get("/admin", ctx -> showAdminPage(ctx, orderService, userService));
 
         app.post("/admin/addBalance", ctx -> addBalance(ctx, userService));
 
@@ -24,7 +24,7 @@ public class AdminController {
     }
 
 
-    private static void showAdminPage(Context ctx, OrderService orderService) {
+    private static void showAdminPage(Context ctx, OrderService orderService, UserService userService) {
 
         User currentUser = ctx.sessionAttribute("currentUser");
 
@@ -35,10 +35,12 @@ public class AdminController {
 
         List<Order> allOrders = orderService.getAllOrders();
         List<OrderLine> allOrderLines = orderService.getAllOrderLines();
+        List<User> allUsers = userService.getAllUsers();
 
         ctx.attribute("currentUser", currentUser);
         ctx.attribute("orders", allOrders);
         ctx.attribute("orderLines", allOrderLines);
+        ctx.attribute("users", allUsers);
 
         ctx.render("admin");
     }

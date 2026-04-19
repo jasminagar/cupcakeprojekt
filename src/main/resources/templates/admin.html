@@ -61,6 +61,28 @@
     </table>
 </section>
 
+<section>
+    <h2>Brugere</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Rolle</th>
+            <th>Saldo</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.role}"></td>
+            <td th:text="${user.balance}"></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
 <p th:if="${message}" th:text="${message}" style="color:green;"></p>
 
 </body>

@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserService {
     private Database database;
@@ -139,5 +141,35 @@ public class UserService {
         }
 
         return null;
+    }
+
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+
+        String sql = "select id, email, name, password, balance, role from users";
+
+        try (Connection con = database.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                User user = new User(
+                        rs.getString("email"),
+                        rs.getString("name"),
+                        rs.getString("password"),
+                        rs.getDouble("balance"),
+                        rs.getString("role")
+                );
+
+                user.setId(rs.getInt("id"));
+
+                users.add(user);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return users;
     }
 }
